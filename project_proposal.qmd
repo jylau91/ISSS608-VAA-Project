@@ -19,17 +19,13 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 2.  **Complex Relationship Analysis**: Understanding connections between committee members, organizations, and geographic locations across multiple datasets
 
-3.  **Temporal Pattern Detection**: Identifying changes in behavior and bias over time
-
-4.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns)
+3.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns)
 
 ## 3.0 Related Work
 
 **Knowledge Graph Visualization**: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships[1]{.underline}.
 
 **Bias Detection in Networks**: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.
-
-**Temporal Network Analysis**: Utilizing time-series visualization techniques to track behavioral changes and identify critical decision points.
 
 **Comparative Dataset Analysis**: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets.
 
@@ -49,8 +45,6 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 -   Develop interactive network visualizations showing relationships between committee members, organizations, and locations
 
--   Create temporal analysis tools to track behavioral changes over time
-
 ### **4.3 Comparative Analysis Tools**
 
 -   Build side-by-side comparison interfaces highlighting differences between datasets
@@ -59,9 +53,7 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 -   Design person-centric views allowing detailed investigation of individual committee members
 
-### **4.4 Evidence Synthesis Dashboard**
-
--   Create comprehensive bias assessment tools combining multiple evidence types
+### **4.4 Outputs**
 
 -   Develop narrative visualization capabilities to support journalistic storytelling
 
@@ -112,7 +104,5 @@ This project will deliver a comprehensive visual analytics platform enabling Ms.
 -   Understand how incomplete data shapes public perception
 
 -   Generate evidence-based journalism with visual proof
-
--   Provide transparency tools for government accountability
 
 The platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges.
