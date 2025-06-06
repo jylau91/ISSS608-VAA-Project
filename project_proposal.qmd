@@ -77,15 +77,7 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 -   Edge weights representing interaction frequency and sentiment
 
-### 5.2 Temporal Activity Timeline
-
--   Multi-track timeline showing meetings, travel, and key decisions
-
--   Comparative tracks for different dataset perspectives
-
--   Highlighting periods of potential bias or unusual activity
-
-### 5.3 Bias Detection Matrix
+### 5.2 Member Bias Detection Matrix
 
 -   Heat map showing member interactions with different industry groups
 
@@ -93,7 +85,7 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 -   Drill-down capabilities for detailed investigation
 
-### 5.4 Geographic Travel Analysis
+### 5.3 Geographic Travel Analysis
 
 -   Map-based visualization of committee member travel patterns
 
