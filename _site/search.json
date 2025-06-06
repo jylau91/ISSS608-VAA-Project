@@ -1,10 +1,59 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISSS608-VAA-Project",
+    "objectID": "project_proposal.html",
+    "href": "project_proposal.html",
+    "title": "Project Proposal",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces serious accusations of bias from two opposing interest groups: FILAH (Fishing is Living and Heritage) and TROUT (Tourism Raises OceanUs Together). Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.\n\n\n\nPrimary Challenge: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.\nSpecific Issues:\n\nIncomplete Data Perspectives: TROUT and FILAH datasets may present biased views of committee activities\nComplex Relationship Analysis: Understanding connections between committee members, organizations, and geographic locations across multiple datasets\nTemporal Pattern Detection: Identifying changes in behavior and bias over time\nMulti-dimensional Bias Assessment: Evaluating bias across different types of activities (meetings, travel, voting patterns)\n\n\n\n\nKnowledge Graph Visualization: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships1.\nBias Detection in Networks: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.\nTemporal Network Analysis: Utilizing time-series visualization techniques to track behavioral changes and identify critical decision points.\nComparative Dataset Analysis: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets.\n\n\n\n\n\n\nDevelop separate visualizations for TROUT and FILAH datasets\nCreate bias detection dashboards showing member activities, travel patterns, and organizational connections\nImplement sentiment analysis visualization for meeting discussions\n\n\n\n\n\nDesign a unified interface combining all three datasets (TROUT, FILAH, and complete journalist dataset)\nDevelop interactive network visualizations showing relationships between committee members, organizations, and locations\nCreate temporal analysis tools to track behavioral changes over time\n\n\n\n\n\nBuild side-by-side comparison interfaces highlighting differences between datasets\nImplement “missing data” visualization to show what each group’s dataset omits\nDesign person-centric views allowing detailed investigation of individual committee members\n\n\n\n\n\nCreate comprehensive bias assessment tools combining multiple evidence types\nDevelop narrative visualization capabilities to support journalistic storytelling\nImplement export functions for publication-ready graphics\n\n\n\n\n\n\n\n\nInteractive force-directed graph showing committee members, organizations, and locations\nColor-coded nodes by industry affiliation (fishing vs. tourism)\nEdge weights representing interaction frequency and sentiment\n\n\n\n\n\nMulti-track timeline showing meetings, travel, and key decisions\nComparative tracks for different dataset perspectives\nHighlighting periods of potential bias or unusual activity\n\n\n\n\n\nHeat map showing member interactions with different industry groups\nStatistical significance indicators for unusual patterns\nDrill-down capabilities for detailed investigation\n\n\n\n\n\nMap-based visualization of committee member travel patterns\nIndustry-specific location clustering\nRoute analysis showing potential conflicts of interest\n\n\n\n\n\nSampling Bias Visualization: Novel techniques to highlight what’s missing from incomplete datasets, using visual metaphors like “ghost nodes” to represent omitted information.\nMulti-perspective Storytelling: Interactive narrative tools allowing journalists to explore different interpretations of the same data while maintaining analytical rigor.\nConfidence Indicators: Visual encoding of data completeness and reliability to help users understand the strength of evidence for different conclusions.\n\n\n\nThis project will deliver a comprehensive visual analytics platform enabling Ms. Moray to:\n\nObjectively assess bias accusations against COOTEFOO members\nIdentify systematic patterns of favoritism or neglect\nUnderstand how incomplete data shapes public perception\nGenerate evidence-based journalism with visual proof\nProvide transparency tools for government accountability\n\nThe platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges."
+  },
+  {
+    "objectID": "project_proposal.html#motivation",
+    "href": "project_proposal.html#motivation",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces serious accusations of bias from two opposing interest groups: FILAH (Fishing is Living and Heritage) and TROUT (Tourism Raises OceanUs Together). Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism."
+  },
+  {
+    "objectID": "project_proposal.html#problems-and-issues-to-address",
+    "href": "project_proposal.html#problems-and-issues-to-address",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Primary Challenge: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.\nSpecific Issues:\n\nIncomplete Data Perspectives: TROUT and FILAH datasets may present biased views of committee activities\nComplex Relationship Analysis: Understanding connections between committee members, organizations, and geographic locations across multiple datasets\nTemporal Pattern Detection: Identifying changes in behavior and bias over time\nMulti-dimensional Bias Assessment: Evaluating bias across different types of activities (meetings, travel, voting patterns)"
+  },
+  {
+    "objectID": "project_proposal.html#related-work",
+    "href": "project_proposal.html#related-work",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Knowledge Graph Visualization: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships1.\nBias Detection in Networks: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.\nTemporal Network Analysis: Utilizing time-series visualization techniques to track behavioral changes and identify critical decision points.\nComparative Dataset Analysis: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets."
+  },
+  {
+    "objectID": "project_proposal.html#proposed-approach",
+    "href": "project_proposal.html#proposed-approach",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Develop separate visualizations for TROUT and FILAH datasets\nCreate bias detection dashboards showing member activities, travel patterns, and organizational connections\nImplement sentiment analysis visualization for meeting discussions\n\n\n\n\n\nDesign a unified interface combining all three datasets (TROUT, FILAH, and complete journalist dataset)\nDevelop interactive network visualizations showing relationships between committee members, organizations, and locations\nCreate temporal analysis tools to track behavioral changes over time\n\n\n\n\n\nBuild side-by-side comparison interfaces highlighting differences between datasets\nImplement “missing data” visualization to show what each group’s dataset omits\nDesign person-centric views allowing detailed investigation of individual committee members\n\n\n\n\n\nCreate comprehensive bias assessment tools combining multiple evidence types\nDevelop narrative visualization capabilities to support journalistic storytelling\nImplement export functions for publication-ready graphics"
+  },
+  {
+    "objectID": "project_proposal.html#visualization-components",
+    "href": "project_proposal.html#visualization-components",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Interactive force-directed graph showing committee members, organizations, and locations\nColor-coded nodes by industry affiliation (fishing vs. tourism)\nEdge weights representing interaction frequency and sentiment\n\n\n\n\n\nMulti-track timeline showing meetings, travel, and key decisions\nComparative tracks for different dataset perspectives\nHighlighting periods of potential bias or unusual activity\n\n\n\n\n\nHeat map showing member interactions with different industry groups\nStatistical significance indicators for unusual patterns\nDrill-down capabilities for detailed investigation\n\n\n\n\n\nMap-based visualization of committee member travel patterns\nIndustry-specific location clustering\nRoute analysis showing potential conflicts of interest"
+  },
+  {
+    "objectID": "project_proposal.html#key-innovation-areas",
+    "href": "project_proposal.html#key-innovation-areas",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "Sampling Bias Visualization: Novel techniques to highlight what’s missing from incomplete datasets, using visual metaphors like “ghost nodes” to represent omitted information.\nMulti-perspective Storytelling: Interactive narrative tools allowing journalists to explore different interpretations of the same data while maintaining analytical rigor.\nConfidence Indicators: Visual encoding of data completeness and reliability to help users understand the strength of evidence for different conclusions."
+  },
+  {
+    "objectID": "project_proposal.html#expected-outcomes",
+    "href": "project_proposal.html#expected-outcomes",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "This project will deliver a comprehensive visual analytics platform enabling Ms. Moray to:\n\nObjectively assess bias accusations against COOTEFOO members\nIdentify systematic patterns of favoritism or neglect\nUnderstand how incomplete data shapes public perception\nGenerate evidence-based journalism with visual proof\nProvide transparency tools for government accountability\n\nThe platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges."
   },
   {
     "objectID": "about.html",
@@ -12,5 +61,12 @@
     "title": "About",
     "section": "",
     "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS608-VAA-Project",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\nTest - update at 0709 - 07 June 2025"
   }
 ]
