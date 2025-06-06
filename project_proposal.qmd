@@ -1,0 +1,126 @@
+---
+title: "Project Proposal"
+author: "G7"
+---
+
+# Project Proposal: Visual Analytics for Government Accountability in Oceanus
+
+## 1.0 Motivation
+
+The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces serious accusations of bias from two opposing interest groups: FILAH (Fishing is Living and Heritage) and TROUT (Tourism Raises OceanUs Together). Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.
+
+## 2.0 Problems and Issues to Address
+
+**Primary Challenge**: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.
+
+**Specific Issues**:
+
+1.  **Incomplete Data Perspectives**: TROUT and FILAH datasets may present biased views of committee activities
+
+2.  **Complex Relationship Analysis**: Understanding connections between committee members, organizations, and geographic locations across multiple datasets
+
+3.  **Temporal Pattern Detection**: Identifying changes in behavior and bias over time
+
+4.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns)
+
+## 3.0 Related Work
+
+**Knowledge Graph Visualization**: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships[1]{.underline}.
+
+**Bias Detection in Networks**: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.
+
+**Temporal Network Analysis**: Utilizing time-series visualization techniques to track behavioral changes and identify critical decision points.
+
+**Comparative Dataset Analysis**: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets.
+
+## 4.0 Proposed Approach
+
+### **4.1 Individual Dataset Analysis**
+
+-   Develop separate visualizations for TROUT and FILAH datasets
+
+-   Create bias detection dashboards showing member activities, travel patterns, and organizational connections
+
+-   Implement sentiment analysis visualization for meeting discussions
+
+### **4.2 Integrated Knowledge Graph Exploration**
+
+-   Design a unified interface combining all three datasets (TROUT, FILAH, and complete journalist dataset)
+
+-   Develop interactive network visualizations showing relationships between committee members, organizations, and locations
+
+-   Create temporal analysis tools to track behavioral changes over time
+
+### **4.3 Comparative Analysis Tools**
+
+-   Build side-by-side comparison interfaces highlighting differences between datasets
+
+-   Implement "missing data" visualization to show what each group's dataset omits
+
+-   Design person-centric views allowing detailed investigation of individual committee members
+
+### **4.4 Evidence Synthesis Dashboard**
+
+-   Create comprehensive bias assessment tools combining multiple evidence types
+
+-   Develop narrative visualization capabilities to support journalistic storytelling
+
+-   Implement export functions for publication-ready graphics
+
+## **5.0 Visualization Components**
+
+### **5.1 Network Overview Dashboard**
+
+-   Interactive force-directed graph showing committee members, organizations, and locations
+
+-   Color-coded nodes by industry affiliation (fishing vs. tourism)
+
+-   Edge weights representing interaction frequency and sentiment
+
+### **5.2 Temporal Activity Timeline**
+
+-   Multi-track timeline showing meetings, travel, and key decisions
+
+-   Comparative tracks for different dataset perspectives
+
+-   Highlighting periods of potential bias or unusual activity
+
+### **5.3 Bias Detection Matrix**
+
+-   Heat map showing member interactions with different industry groups
+
+-   Statistical significance indicators for unusual patterns
+
+-   Drill-down capabilities for detailed investigation
+
+### **5.4 Geographic Travel Analysis**
+
+-   Map-based visualization of committee member travel patterns
+
+-   Industry-specific location clustering
+
+-   Route analysis showing potential conflicts of interest
+
+## **6.0 Key Innovation Areas**
+
+**Sampling Bias Visualization**: Novel techniques to highlight what's missing from incomplete datasets, using visual metaphors like "ghost nodes" to represent omitted information.
+
+**Multi-perspective Storytelling**: Interactive narrative tools allowing journalists to explore different interpretations of the same data while maintaining analytical rigor.
+
+**Confidence Indicators**: Visual encoding of data completeness and reliability to help users understand the strength of evidence for different conclusions.
+
+## 7.0 Expected Outcomes
+
+This project will deliver a comprehensive visual analytics platform enabling Ms. Moray to:
+
+-   Objectively assess bias accusations against COOTEFOO members
+
+-   Identify systematic patterns of favoritism or neglect
+
+-   Understand how incomplete data shapes public perception
+
+-   Generate evidence-based journalism with visual proof
+
+-   Provide transparency tools for government accountability
+
+The platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges.
