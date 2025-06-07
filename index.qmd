@@ -2,7 +2,7 @@
 title: "Welcome to Our VAST Mini Challenge 2 (Project Page)"
 ---
 
-## ![](images/VAST MC2 Cover Pg.png)
+## ![](images/VAST%20MC2%20Cover%20Pg.png)
 
 ## Project Brief
 
