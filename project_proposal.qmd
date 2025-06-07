@@ -140,7 +140,7 @@ library(gt)
 scope <- tribble(
   ~`Action and Task`,                             ~PIC,                           ~`Date By`,
   "Network analysis: node-link diagram & summary stats", "Jia Yi",                    as.Date("2025-06-14"),
-  "Geographic analysis: travel clustering & mapping",  "Jesse",                    as.Date("2025-06-14"),
+  "Geographic analysis: travel clustering & mapping",  "Jesse Lucas",                    as.Date("2025-06-14"),
   "Sentiment heatmap & drill-down implementation",     "Sari",                      as.Date("2025-06-14"),
   "Integrated Shiny dashboard assembly & testing",     "All (Jesse, Jia Yi, Sari)", as.Date("2025-06-18")
 )
