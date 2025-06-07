@@ -2,4 +2,18 @@
 title: "About"
 ---
 
-About this site
+**School:** Singapore Management University (SMU)
+
+**Program:** Master of IT in Business (MITB)
+
+**Subject:** ISSS608 Visual Analytics and Applications taught by [Prof Kam](https://faculty.smu.edu.sg/profile/kam-tin-seong-486)
+
+**Team:** Group 7
+
+**Members:**
+
+-   [JESSE EMMANUEL LUCAS](https://isss608-ay2025.netlify.app/take-home_ex/take-home_ex01/take-home_ex01)
+
+-   [LAU JIA YI](https://isss608-ay2024-25apr-jylau.netlify.app/t1/takehome_ex01)
+
+-   [SARIYANTI HARTIONO](https://isss608-shar.netlify.app/take-home_ex/take-home_ex_1/take-home_ex01)
