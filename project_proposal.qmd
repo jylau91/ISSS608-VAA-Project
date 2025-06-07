@@ -85,13 +85,9 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 -   Route analysis showing potential conflicts of interest
 
-## 6.0 Key Innovation Areas
+## 6.0 Scope of Work
 
-Sampling Bias Visualization: Novel techniques to highlight what's missing from incomplete datasets, using visual metaphors like "ghost nodes" to represent omitted information.
-
-Multi-perspective Storytelling: Interactive narrative tools allowing journalists to explore different interpretations of the same data while maintaining analytical rigor.
-
-Confidence Indicators: Visual encoding of data completeness and reliability to help users understand the strength of evidence for different conclusions.
+\~ Insert table of work allocation
 
 ## 7.0 Expected Outcomes
 
