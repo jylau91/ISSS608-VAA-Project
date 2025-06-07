@@ -1,6 +1,15 @@
 ---
 title: "Project Proposal"
-author: "G7"
+author: "Group 7"
+date: 07 June 2025
+date-modified: "last-modified"
+format: html
+editor: visual
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 # Project Proposal: Visual Analytics for Government Accountability in Oceanus
@@ -15,90 +24,146 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 **Specific Issues**:
 
-1.  **Incomplete Data Perspectives**: TROUT and FILAH datasets may present biased views of committee activities
+1.  **Incomplete Data Perspectives**: TROUT and FILAH datasets each capture only a subset of COOTEFOO's engagements, potentially risking skewed conclusions. Reconciling these partial views against a more complete dataset by Journalist Edwina Darling Moray is needed.
 
-2.  **Complex Relationship Analysis**: Understanding connections between committee members, organizations, and geographic locations across multiple datasets
+2.  **Complex Relationship Analysis**: Understanding connections between committee members, organizations, and geographic locations across multiple datasets. We need to surface clusters of members and topics to reveal chambers forming around fishing or tourism interests.
 
-3.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns)
+3.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns) will allow us to pinpoint not only whether bias exists but how and where it arises from.
 
 ## 3.0 Related Work
 
-**Knowledge Graph Visualization**: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships[1]{.underline}.
+**Knowledge Graph Visualization**: Techniques such as force-directed layouts and adjacency matrices have proven effective for exploring large entity-relation networks and highlighting community structures and central actors.
 
-**Bias Detection in Networks**: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.
+**Bias Detection in Networks**: Network analysis metrics e.g. centrality differences will allow us to detect systemic inclinations in decision-making and group formation.
 
-**Comparative Dataset Analysis**: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets.
+**Comparative Dataset Analysis**: Visualising differences between overlapping datasets is critical for us to assess how incomplete group records may distort perceived patterns.
 
 ## 4.0 Proposed Approach
 
-### **4.1 Individual Dataset Analysis**
+In addition to exploratory data analysis on the respective data sets we propose the four complementary visual‐analytics modules below. Each visualisation is to address a different facet of bias detection in COOTEFOO’s activity. Each subsection includes a narrative description and a sketch before implementing it via code in R.
 
--   Develop separate visualizations for TROUT and FILAH datasets
+### 4.1 Network Analysis of Members, Topics, and Plans
 
--   Create bias detection dashboards showing member activities, travel patterns, and organizational connections
+We will build a node‐link diagram of COOTEFOO members, discussion topics, and plans, augmented by summary statistics to surface patterns of engagement.
 
--   Implement sentiment analysis visualization for meeting discussions
+**Objectives**
 
-### **4.2 Integrated Knowledge Graph Exploration**
+Identify which members engage most heavily with fishing vs. tourism topics.
 
--   Design a unified interface combining all three datasets (TROUT, FILAH, and complete journalist dataset)
+-   Highlight clusters of topics or plans that attract similar participants (potential “echo chambers”).
 
--   Develop interactive network visualizations showing relationships between committee members, organizations, and locations
+-   Compute and display counts of discussions and plans per member–topic pair to detect asymmetric attention.
 
-### **4.3 Comparative Analysis Tools**
+**Visualization**
 
--   Build side-by-side comparison interfaces highlighting differences between datasets
+-   **Force‐directed graph** (with `ggraph`): nodes = persons, topics, plans; edges = “participant” and “about” relations; color by industry.
 
--   Implement "missing data" visualization to show what each group's dataset omits
+-   **Bar chart / dot plot**: counts of discussions by member and by topic.
 
--   Design person-centric views allowing detailed investigation of individual committee members
+-   **Sketch:**
 
-### **4.4 Outputs**
+    ![](images/clipboard-396038532.png)
 
--   Develop narrative visualization capabilities to support journalistic storytelling
+### 4.2 Geographic Analysis of Travel Patterns
 
--   Implement export functions for publication-ready graphics
+We will map official trips and cluster travel endpoints to detect spatial bias in where members go.
 
-## 5.0 Visualization Components
+**Objectives**
 
-### 5.1 Network Overview Dashboard
+Show geographic distribution of fishing- vs. tourism-related visits.
 
--   Interactive force-directed graph showing committee members, organizations, and locations
+-    Identify clusters (e.g. fishing sites vs. tourist attractions) via unsupervised methods.
 
--   Color-coded nodes by industry affiliation (fishing vs. tourism)
+-   Overlay COOTEFOO trips on a basemap of Oceanus.
 
--   Edge weights representing interaction frequency and sentiment
+**Visualization**
 
-### 5.2 Member Bias Detection Matrix
+-   **Choropleth or point map** with `sf` + `ggplot2` or `tmap`.
 
--   Heat map showing member interactions with different industry groups
+-    **DBSCAN clusters** colored by industry and labelled.
 
--   Statistical significance indicators for unusual patterns
+-   **Sketch:**
 
--   Drill-down capabilities for detailed investigation
+### 4.3 Sentiment Heatmap by Member and Industry
 
-### 5.3 Geographic Travel Analysis
+We will summarize the sentiment of each member’s contributions across industries in a heatmap, with drill-down details available on demand.
 
--   Map-based visualization of committee member travel patterns
+**Objectives**
 
--   Industry-specific location clustering
+-    Quantify and compare average sentiment (e.g. –1 to +1) for each member in fishing and tourism contexts.
 
--   Route analysis showing potential conflicts of interest
+-    Reveal extreme stances or consistent positivity/negativity.
 
-## 6.0 Scope of Work
+-    Support drill-down to underlying “reason” given by members in dataset.
 
-\~ Insert table of work allocation
+**Visualization**
 
-## 7.0 Expected Outcomes
+-   **Heatmap** (`geom_tile`) of members (y‐axis) vs. industry (x‐axis), colored by mean sentiment.
 
-This project will deliver a comprehensive visual analytics platform enabling Ms. Moray to:
+-   **Interactive drill-down** via `plotly` or `shiny`: clicking a cell shows a table of comments and reasons.
 
--   Objectively assess bias accusations against COOTEFOO members
+-   **Sketch:**
 
--   Identify systematic patterns of favoritism or neglect
+### 4.4 Integrated Interactive Dashboard
 
--   Understand how incomplete data shapes public perception
+Finally, we tie together network, map, and heatmap in a single Shiny dashboard so users can filter by member or industry and see all views update in concert.
 
--   Generate evidence-based journalism with visual proof
+**Objectives**
 
-The platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges.
+-   Enable selection of one or more members (or entire committee).
+
+-    Synchronize network, map, and heatmap panels.
+
+-    Provide pop-up detail panels for individual plans, discussions, and travel records.
+
+**Visualization**
+
+-    **Shiny app** with `fluidRow` of three panels: network (`ggraphOutput`), map (`leafletOutput`), heatmap (`plotlyOutput`).
+
+-    **Sidebar** controls for member, industry, date range.
+
+-   **Sketch:**
+
+## 5.0 Scope of Work
+
+```{r scope-of-work, echo=FALSE}
+
+library(tibble)
+library(dplyr)
+library(gt)
+
+# Define the scope of work for Section 4, ensuring Date By is a Date class
+scope <- tribble(
+  ~`Action and Task`,                             ~PIC,                           ~`Date By`,
+  "Network analysis: node-link diagram & summary stats", "Jia Yi",                    as.Date("2025-06-14"),
+  "Geographic analysis: travel clustering & mapping",  "Jesse",                    as.Date("2025-06-14"),
+  "Sentiment heatmap & drill-down implementation",     "Sari",                      as.Date("2025-06-14"),
+  "Integrated Shiny dashboard assembly & testing",     "All (Jesse, Jia Yi, Sari)", as.Date("2025-06-18")
+)
+
+# Render a polished table with gt and bold only the header of Action & Task
+scope %>%
+  gt() %>%
+  cols_label(
+    `Action and Task` = "Action & Task",
+    PIC = "PIC",
+    `Date By` = "Date By"
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
+
+
+```
+
+## 6.0 Expected Outcomes
+
+Upon completion, this project will deliver a cohesive, interactive visual analytics platform that enables Ms. Moray to:
+
+-   **Objectively assess** bias allegations against COOTEFOO members by triangulating network, spatial, and sentiment metrics.
+-   **Reveal systematic patterns** of favoritism or neglect across topics, geographic locations, and member contributions.
+-   **Demonstrate the influence** of incomplete or partial datasets on public perceptions of committee behavior.
+-   **Produce clear, evidence-based narratives** that support transparent and accountable journalism.
+
+Beyond Oceanus, this platform will serve as a reusable template for data-driven investigative reporting and government oversight visualization, with broad applicability to other contexts demanding transparency and equity.

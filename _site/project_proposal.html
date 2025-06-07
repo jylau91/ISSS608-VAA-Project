@@ -6,7 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="G7">
+<meta name="author" content="Group 7">
+<meta name="dcterms.date" content="2025-06-07">
 
 <title>Project Proposal – ISSS608-VAA-Project</title>
 <style>
@@ -124,19 +125,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#related-work" id="toc-related-work" class="nav-link" data-scroll-target="#related-work">3.0 Related Work</a></li>
   <li><a href="#proposed-approach" id="toc-proposed-approach" class="nav-link" data-scroll-target="#proposed-approach">4.0 Proposed Approach</a>
   <ul class="collapse">
-  <li><a href="#individual-dataset-analysis" id="toc-individual-dataset-analysis" class="nav-link" data-scroll-target="#individual-dataset-analysis"><strong>4.1 Individual Dataset Analysis</strong></a></li>
-  <li><a href="#integrated-knowledge-graph-exploration" id="toc-integrated-knowledge-graph-exploration" class="nav-link" data-scroll-target="#integrated-knowledge-graph-exploration"><strong>4.2 Integrated Knowledge Graph Exploration</strong></a></li>
-  <li><a href="#comparative-analysis-tools" id="toc-comparative-analysis-tools" class="nav-link" data-scroll-target="#comparative-analysis-tools"><strong>4.3 Comparative Analysis Tools</strong></a></li>
-  <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs"><strong>4.4 Outputs</strong></a></li>
+  <li><a href="#network-analysis-of-members-topics-and-plans" id="toc-network-analysis-of-members-topics-and-plans" class="nav-link" data-scroll-target="#network-analysis-of-members-topics-and-plans">4.1 Network Analysis of Members, Topics, and Plans</a></li>
+  <li><a href="#geographic-analysis-of-travel-patterns" id="toc-geographic-analysis-of-travel-patterns" class="nav-link" data-scroll-target="#geographic-analysis-of-travel-patterns">4.2 Geographic Analysis of Travel Patterns</a></li>
+  <li><a href="#sentiment-heatmap-by-member-and-industry" id="toc-sentiment-heatmap-by-member-and-industry" class="nav-link" data-scroll-target="#sentiment-heatmap-by-member-and-industry">4.3 Sentiment Heatmap by Member and Industry</a></li>
+  <li><a href="#integrated-interactive-dashboard" id="toc-integrated-interactive-dashboard" class="nav-link" data-scroll-target="#integrated-interactive-dashboard">4.4 Integrated Interactive Dashboard</a></li>
   </ul></li>
-  <li><a href="#visualization-components" id="toc-visualization-components" class="nav-link" data-scroll-target="#visualization-components">5.0 Visualization Components</a>
-  <ul class="collapse">
-  <li><a href="#network-overview-dashboard" id="toc-network-overview-dashboard" class="nav-link" data-scroll-target="#network-overview-dashboard">5.1 Network Overview Dashboard</a></li>
-  <li><a href="#member-bias-detection-matrix" id="toc-member-bias-detection-matrix" class="nav-link" data-scroll-target="#member-bias-detection-matrix">5.2 Member Bias Detection Matrix</a></li>
-  <li><a href="#geographic-travel-analysis" id="toc-geographic-travel-analysis" class="nav-link" data-scroll-target="#geographic-travel-analysis">5.3 Geographic Travel Analysis</a></li>
-  </ul></li>
-  <li><a href="#key-innovation-areas" id="toc-key-innovation-areas" class="nav-link" data-scroll-target="#key-innovation-areas">6.0 Key Innovation Areas</a></li>
-  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">7.0 Expected Outcomes</a></li>
+  <li><a href="#scope-of-work" id="toc-scope-of-work" class="nav-link" data-scroll-target="#scope-of-work">5.0 Scope of Work</a></li>
+  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">6.0 Expected Outcomes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -156,11 +151,23 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>G7 </p>
+             <p>Group 7 </p>
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 7, 2025</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">June 7, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -180,93 +187,586 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Primary Challenge</strong>: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.</p>
 <p><strong>Specific Issues</strong>:</p>
 <ol type="1">
-<li><p><strong>Incomplete Data Perspectives</strong>: TROUT and FILAH datasets may present biased views of committee activities</p></li>
-<li><p><strong>Complex Relationship Analysis</strong>: Understanding connections between committee members, organizations, and geographic locations across multiple datasets</p></li>
-<li><p><strong>Multi-dimensional Bias Assessment</strong>: Evaluating bias across different types of activities (meetings, travel, voting patterns)</p></li>
+<li><p><strong>Incomplete Data Perspectives</strong>: TROUT and FILAH datasets each capture only a subset of COOTEFOO’s engagements, potentially risking skewed conclusions. Reconciling these partial views against a more complete dataset by Journalist Edwina Darling Moray is needed.</p></li>
+<li><p><strong>Complex Relationship Analysis</strong>: Understanding connections between committee members, organizations, and geographic locations across multiple datasets. We need to surface clusters of members and topics to reveal chambers forming around fishing or tourism interests.</p></li>
+<li><p><strong>Multi-dimensional Bias Assessment</strong>: Evaluating bias across different types of activities (meetings, travel, voting patterns) will allow us to pinpoint not only whether bias exists but how and where it arises from.</p></li>
 </ol>
 </section>
 <section id="related-work" class="level2">
 <h2 class="anchored" data-anchor-id="related-work">3.0 Related Work</h2>
-<p><strong>Knowledge Graph Visualization</strong>: Building on established techniques for visualizing complex network relationships, including node-link diagrams and matrix representations for understanding entity relationships<u>1</u>.</p>
-<p><strong>Bias Detection in Networks</strong>: Leveraging research in algorithmic bias detection and network analysis to identify systematic patterns in decision-making processes.</p>
-<p><strong>Comparative Dataset Analysis</strong>: Applying techniques from comparative genomics and social network analysis to highlight differences between incomplete and complete datasets.</p>
+<p><strong>Knowledge Graph Visualization</strong>: Techniques such as force-directed layouts and adjacency matrices have proven effective for exploring large entity-relation networks and highlighting community structures and central actors.</p>
+<p><strong>Bias Detection in Networks</strong>: Network analysis metrics e.g.&nbsp;centrality differences will allow us to detect systemic inclinations in decision-making and group formation.</p>
+<p><strong>Comparative Dataset Analysis</strong>: Visualising differences between overlapping datasets is critical for us to assess how incomplete group records may distort perceived patterns.</p>
 </section>
 <section id="proposed-approach" class="level2">
 <h2 class="anchored" data-anchor-id="proposed-approach">4.0 Proposed Approach</h2>
-<section id="individual-dataset-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="individual-dataset-analysis"><strong>4.1 Individual Dataset Analysis</strong></h3>
+<p>In addition to exploratory data analysis on the respective data sets we propose the four complementary visual‐analytics modules below. Each visualisation is to address a different facet of bias detection in COOTEFOO’s activity. Each subsection includes a narrative description and a sketch before implementing it via code in R.</p>
+<section id="network-analysis-of-members-topics-and-plans" class="level3">
+<h3 class="anchored" data-anchor-id="network-analysis-of-members-topics-and-plans">4.1 Network Analysis of Members, Topics, and Plans</h3>
+<p>We will build a node‐link diagram of COOTEFOO members, discussion topics, and plans, augmented by summary statistics to surface patterns of engagement.</p>
+<p><strong>Objectives</strong></p>
+<p>Identify which members engage most heavily with fishing vs.&nbsp;tourism topics.</p>
 <ul>
-<li><p>Develop separate visualizations for TROUT and FILAH datasets</p></li>
-<li><p>Create bias detection dashboards showing member activities, travel patterns, and organizational connections</p></li>
-<li><p>Implement sentiment analysis visualization for meeting discussions</p></li>
+<li><p>Highlight clusters of topics or plans that attract similar participants (potential “echo chambers”).</p></li>
+<li><p>Compute and display counts of discussions and plans per member–topic pair to detect asymmetric attention.</p></li>
+</ul>
+<p><strong>Visualization</strong></p>
+<ul>
+<li><p><strong>Force‐directed graph</strong> (with <code>ggraph</code>): nodes = persons, topics, plans; edges = “participant” and “about” relations; color by industry.</p></li>
+<li><p><strong>Bar chart / dot plot</strong>: counts of discussions by member and by topic.</p></li>
+<li><p><strong>Sketch:</strong></p>
+<p><img src="images/clipboard-396038532.png" class="img-fluid"></p></li>
 </ul>
 </section>
-<section id="integrated-knowledge-graph-exploration" class="level3">
-<h3 class="anchored" data-anchor-id="integrated-knowledge-graph-exploration"><strong>4.2 Integrated Knowledge Graph Exploration</strong></h3>
+<section id="geographic-analysis-of-travel-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="geographic-analysis-of-travel-patterns">4.2 Geographic Analysis of Travel Patterns</h3>
+<p>We will map official trips and cluster travel endpoints to detect spatial bias in where members go.</p>
+<p><strong>Objectives</strong></p>
+<p>Show geographic distribution of fishing- vs.&nbsp;tourism-related visits.</p>
 <ul>
-<li><p>Design a unified interface combining all three datasets (TROUT, FILAH, and complete journalist dataset)</p></li>
-<li><p>Develop interactive network visualizations showing relationships between committee members, organizations, and locations</p></li>
+<li><p>Identify clusters (e.g.&nbsp;fishing sites vs.&nbsp;tourist attractions) via unsupervised methods.</p></li>
+<li><p>Overlay COOTEFOO trips on a basemap of Oceanus.</p></li>
+</ul>
+<p><strong>Visualization</strong></p>
+<ul>
+<li><p><strong>Choropleth or point map</strong> with <code>sf</code> + <code>ggplot2</code> or <code>tmap</code>.</p></li>
+<li><p><strong>DBSCAN clusters</strong> colored by industry and labelled.</p></li>
+<li><p><strong>Sketch:</strong></p></li>
 </ul>
 </section>
-<section id="comparative-analysis-tools" class="level3">
-<h3 class="anchored" data-anchor-id="comparative-analysis-tools"><strong>4.3 Comparative Analysis Tools</strong></h3>
+<section id="sentiment-heatmap-by-member-and-industry" class="level3">
+<h3 class="anchored" data-anchor-id="sentiment-heatmap-by-member-and-industry">4.3 Sentiment Heatmap by Member and Industry</h3>
+<p>We will summarize the sentiment of each member’s contributions across industries in a heatmap, with drill-down details available on demand.</p>
+<p><strong>Objectives</strong></p>
 <ul>
-<li><p>Build side-by-side comparison interfaces highlighting differences between datasets</p></li>
-<li><p>Implement “missing data” visualization to show what each group’s dataset omits</p></li>
-<li><p>Design person-centric views allowing detailed investigation of individual committee members</p></li>
+<li><p>Quantify and compare average sentiment (e.g.&nbsp;–1 to +1) for each member in fishing and tourism contexts.</p></li>
+<li><p>Reveal extreme stances or consistent positivity/negativity.</p></li>
+<li><p>Support drill-down to underlying “reason” given by members in dataset.</p></li>
+</ul>
+<p><strong>Visualization</strong></p>
+<ul>
+<li><p><strong>Heatmap</strong> (<code>geom_tile</code>) of members (y‐axis) vs.&nbsp;industry (x‐axis), colored by mean sentiment.</p></li>
+<li><p><strong>Interactive drill-down</strong> via <code>plotly</code> or <code>shiny</code>: clicking a cell shows a table of comments and reasons.</p></li>
+<li><p><strong>Sketch:</strong></p></li>
 </ul>
 </section>
-<section id="outputs" class="level3">
-<h3 class="anchored" data-anchor-id="outputs"><strong>4.4 Outputs</strong></h3>
+<section id="integrated-interactive-dashboard" class="level3">
+<h3 class="anchored" data-anchor-id="integrated-interactive-dashboard">4.4 Integrated Interactive Dashboard</h3>
+<p>Finally, we tie together network, map, and heatmap in a single Shiny dashboard so users can filter by member or industry and see all views update in concert.</p>
+<p><strong>Objectives</strong></p>
 <ul>
-<li><p>Develop narrative visualization capabilities to support journalistic storytelling</p></li>
-<li><p>Implement export functions for publication-ready graphics</p></li>
+<li><p>Enable selection of one or more members (or entire committee).</p></li>
+<li><p>Synchronize network, map, and heatmap panels.</p></li>
+<li><p>Provide pop-up detail panels for individual plans, discussions, and travel records.</p></li>
 </ul>
-</section>
-</section>
-<section id="visualization-components" class="level2">
-<h2 class="anchored" data-anchor-id="visualization-components">5.0 Visualization Components</h2>
-<section id="network-overview-dashboard" class="level3">
-<h3 class="anchored" data-anchor-id="network-overview-dashboard">5.1 Network Overview Dashboard</h3>
+<p><strong>Visualization</strong></p>
 <ul>
-<li><p>Interactive force-directed graph showing committee members, organizations, and locations</p></li>
-<li><p>Color-coded nodes by industry affiliation (fishing vs.&nbsp;tourism)</p></li>
-<li><p>Edge weights representing interaction frequency and sentiment</p></li>
-</ul>
-</section>
-<section id="member-bias-detection-matrix" class="level3">
-<h3 class="anchored" data-anchor-id="member-bias-detection-matrix">5.2 Member Bias Detection Matrix</h3>
-<ul>
-<li><p>Heat map showing member interactions with different industry groups</p></li>
-<li><p>Statistical significance indicators for unusual patterns</p></li>
-<li><p>Drill-down capabilities for detailed investigation</p></li>
-</ul>
-</section>
-<section id="geographic-travel-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="geographic-travel-analysis">5.3 Geographic Travel Analysis</h3>
-<ul>
-<li><p>Map-based visualization of committee member travel patterns</p></li>
-<li><p>Industry-specific location clustering</p></li>
-<li><p>Route analysis showing potential conflicts of interest</p></li>
+<li><p><strong>Shiny app</strong> with <code>fluidRow</code> of three panels: network (<code>ggraphOutput</code>), map (<code>leafletOutput</code>), heatmap (<code>plotlyOutput</code>).</p></li>
+<li><p><strong>Sidebar</strong> controls for member, industry, date range.</p></li>
+<li><p><strong>Sketch:</strong></p></li>
 </ul>
 </section>
 </section>
-<section id="key-innovation-areas" class="level2">
-<h2 class="anchored" data-anchor-id="key-innovation-areas">6.0 Key Innovation Areas</h2>
-<p>Sampling Bias Visualization: Novel techniques to highlight what’s missing from incomplete datasets, using visual metaphors like “ghost nodes” to represent omitted information.</p>
-<p>Multi-perspective Storytelling: Interactive narrative tools allowing journalists to explore different interpretations of the same data while maintaining analytical rigor.</p>
-<p>Confidence Indicators: Visual encoding of data completeness and reliability to help users understand the strength of evidence for different conclusions.</p>
+<section id="scope-of-work" class="level2">
+<h2 class="anchored" data-anchor-id="scope-of-work">5.0 Scope of Work</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="kwapskjjhb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kwapskjjhb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kwapskjjhb thead, #kwapskjjhb tbody, #kwapskjjhb tfoot, #kwapskjjhb tr, #kwapskjjhb td, #kwapskjjhb th {
+  border-style: none;
+}
+
+#kwapskjjhb p {
+  margin: 0;
+  padding: 0;
+}
+
+#kwapskjjhb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kwapskjjhb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kwapskjjhb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kwapskjjhb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kwapskjjhb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kwapskjjhb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kwapskjjhb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kwapskjjhb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kwapskjjhb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kwapskjjhb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kwapskjjhb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kwapskjjhb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kwapskjjhb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kwapskjjhb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kwapskjjhb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwapskjjhb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kwapskjjhb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kwapskjjhb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kwapskjjhb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwapskjjhb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kwapskjjhb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwapskjjhb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kwapskjjhb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwapskjjhb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kwapskjjhb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwapskjjhb .gt_left {
+  text-align: left;
+}
+
+#kwapskjjhb .gt_center {
+  text-align: center;
+}
+
+#kwapskjjhb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kwapskjjhb .gt_font_normal {
+  font-weight: normal;
+}
+
+#kwapskjjhb .gt_font_bold {
+  font-weight: bold;
+}
+
+#kwapskjjhb .gt_font_italic {
+  font-style: italic;
+}
+
+#kwapskjjhb .gt_super {
+  font-size: 65%;
+}
+
+#kwapskjjhb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kwapskjjhb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kwapskjjhb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kwapskjjhb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kwapskjjhb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kwapskjjhb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kwapskjjhb .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#kwapskjjhb .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#kwapskjjhb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="Action-and-Task" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Action &amp; Task</th>
+<th id="PIC" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">PIC</th>
+<th id="Date-By" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Date By</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Action and Task">Network analysis: node-link diagram &amp; summary stats</td>
+<td class="gt_row gt_left" headers="PIC">Jia Yi</td>
+<td class="gt_row gt_right" headers="Date By">2025-06-14</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Action and Task">Geographic analysis: travel clustering &amp; mapping</td>
+<td class="gt_row gt_left" headers="PIC">Jesse</td>
+<td class="gt_row gt_right" headers="Date By">2025-06-14</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Action and Task">Sentiment heatmap &amp; drill-down implementation</td>
+<td class="gt_row gt_left" headers="PIC">Sari</td>
+<td class="gt_row gt_right" headers="Date By">2025-06-14</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Action and Task">Integrated Shiny dashboard assembly &amp; testing</td>
+<td class="gt_row gt_left" headers="PIC">All (Jesse, Jia Yi, Sari)</td>
+<td class="gt_row gt_right" headers="Date By">2025-06-18</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="expected-outcomes" class="level2">
-<h2 class="anchored" data-anchor-id="expected-outcomes">7.0 Expected Outcomes</h2>
-<p>This project will deliver a comprehensive visual analytics platform enabling Ms.&nbsp;Moray to:</p>
+<h2 class="anchored" data-anchor-id="expected-outcomes">6.0 Expected Outcomes</h2>
+<p>Upon completion, this project will deliver a cohesive, interactive visual analytics platform that enables Ms.&nbsp;Moray to:</p>
 <ul>
-<li><p>Objectively assess bias accusations against COOTEFOO members</p></li>
-<li><p>Identify systematic patterns of favoritism or neglect</p></li>
-<li><p>Understand how incomplete data shapes public perception</p></li>
-<li><p>Generate evidence-based journalism with visual proof</p></li>
+<li><strong>Objectively assess</strong> bias allegations against COOTEFOO members by triangulating network, spatial, and sentiment metrics.</li>
+<li><strong>Reveal systematic patterns</strong> of favoritism or neglect across topics, geographic locations, and member contributions.</li>
+<li><strong>Demonstrate the influence</strong> of incomplete or partial datasets on public perceptions of committee behavior.</li>
+<li><strong>Produce clear, evidence-based narratives</strong> that support transparent and accountable journalism.</li>
 </ul>
-<p>The platform will serve as a model for data-driven investigative journalism and government oversight visualization, with potential applications beyond Oceanus to other transparency and accountability challenges.</p>
+<p>Beyond Oceanus, this platform will serve as a reusable template for data-driven investigative reporting and government oversight visualization, with broad applicability to other contexts demanding transparency and equity.</p>
 
 
 </section>
