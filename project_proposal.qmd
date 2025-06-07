@@ -14,11 +14,15 @@ execute:
 
 # Project Proposal: Visual Analytics for Government Accountability in Oceanus
 
-## 1.0 Motivation
+## 1.0 Introduction
 
-The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces serious accusations of bias from two opposing interest groups: FILAH (Fishing is Living and Heritage) and TROUT (Tourism Raises OceanUs Together). Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.
+In this project, we tackle **Mini-Challenge 2** of the 2025 IEEE VAST Challenge ([VAST Challenge MC2](https://vacommunity.org/VAST+Challenge+2025+MC2)), which provides three JSON‑based knowledge graphs—**TROUT** (Tourism Raises OceanUs Together), **FILAH** (Fishing Is Living and Heritage), and an independent **journalist** dataset—alongside a GeoJSON file **oceanus_map.geojson** (administrative basemap) and **road_map.json** (road/travel network). Together, these datasets capture the Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) members’ meeting participation, travel records, and discussion transcripts within their spatial context. By integrating and analyzing these interlinked sources, we will uncover network structures, spatial clustering, and sentiment trends that offer transparent, data‑driven insights into potential bias.
 
-## 2.0 Problems and Issues to Address
+## 2.0 Motivation
+
+The COOTEFOO faces serious accusations of bias from two opposing interest groups: FILAH and TROUT . Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.
+
+## 3.0 Problems and Issues to Address
 
 **Primary Challenge**: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.
 
@@ -30,7 +34,7 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 3.  **Multi-dimensional Bias Assessment**: Evaluating bias across different types of activities (meetings, travel, voting patterns) will allow us to pinpoint not only whether bias exists but how and where it arises from.
 
-## 3.0 Related Work
+## 4.0 Related Work
 
 **Knowledge Graph Visualization**: Techniques such as force-directed layouts and adjacency matrices have proven effective for exploring large entity-relation networks and highlighting community structures and central actors.
 
@@ -38,11 +42,11 @@ The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces ser
 
 **Comparative Dataset Analysis**: Visualising differences between overlapping datasets is critical for us to assess how incomplete group records may distort perceived patterns.
 
-## 4.0 Proposed Approach
+## 5.0 Proposed Approach
 
 In addition to exploratory data analysis on the respective data sets we propose the four complementary visual‐analytics modules below. Each visualisation is to address a different facet of bias detection in COOTEFOO’s activity. Each subsection includes a narrative description and a sketch before implementing it via code in R.
 
-### 4.1 Network Analysis of Members, Topics, and Plans
+### 5.1 Network Analysis of Members, Topics, and Plans
 
 We will build a node‐link diagram of COOTEFOO members, discussion topics, and plans, augmented by summary statistics to surface patterns of engagement.
 
@@ -64,7 +68,7 @@ Identify which members engage most heavily with fishing vs. tourism topics.
 
     ![](images/clipboard-396038532.png)
 
-### 4.2 Geographic Analysis of Travel Patterns
+### 5.2 Geographic Analysis of Travel Patterns
 
 We will map official trips and cluster travel endpoints to detect spatial bias in where members go.
 
@@ -72,7 +76,7 @@ We will map official trips and cluster travel endpoints to detect spatial bias i
 
 Show geographic distribution of fishing- vs. tourism-related visits.
 
--    Identify clusters (e.g. fishing sites vs. tourist attractions) via unsupervised methods.
+-   Identify clusters (e.g. fishing sites vs. tourist attractions) via unsupervised methods.
 
 -   Overlay COOTEFOO trips on a basemap of Oceanus.
 
@@ -80,21 +84,21 @@ Show geographic distribution of fishing- vs. tourism-related visits.
 
 -   **Choropleth or point map** with `sf` + `ggplot2` or `tmap`.
 
--    **DBSCAN clusters** colored by industry and labelled.
+-   **DBSCAN clusters** colored by industry and labelled.
 
 -   **Sketch:**
 
-### 4.3 Sentiment Heatmap by Member and Industry
+### 5.3 Sentiment Heatmap by Member and Industry
 
 We will summarize the sentiment of each member’s contributions across industries in a heatmap, with drill-down details available on demand.
 
 **Objectives**
 
--    Quantify and compare average sentiment (e.g. –1 to +1) for each member in fishing and tourism contexts.
+-   Quantify and compare average sentiment (e.g. –1 to +1) for each member in fishing and tourism contexts.
 
--    Reveal extreme stances or consistent positivity/negativity.
+-   Reveal extreme stances or consistent positivity/negativity.
 
--    Support drill-down to underlying “reason” given by members in dataset.
+-   Support drill-down to underlying “reason” given by members in dataset.
 
 **Visualization**
 
@@ -104,7 +108,7 @@ We will summarize the sentiment of each member’s contributions across industri
 
 -   **Sketch:**
 
-### 4.4 Integrated Interactive Dashboard
+### 5.4 Integrated Interactive Dashboard
 
 Finally, we tie together network, map, and heatmap in a single Shiny dashboard so users can filter by member or industry and see all views update in concert.
 
@@ -112,19 +116,19 @@ Finally, we tie together network, map, and heatmap in a single Shiny dashboard s
 
 -   Enable selection of one or more members (or entire committee).
 
--    Synchronize network, map, and heatmap panels.
+-   Synchronize network, map, and heatmap panels.
 
--    Provide pop-up detail panels for individual plans, discussions, and travel records.
+-   Provide pop-up detail panels for individual plans, discussions, and travel records.
 
 **Visualization**
 
--    **Shiny app** with `fluidRow` of three panels: network (`ggraphOutput`), map (`leafletOutput`), heatmap (`plotlyOutput`).
+-   **Shiny app** with `fluidRow` of three panels: network (`ggraphOutput`), map (`leafletOutput`), heatmap (`plotlyOutput`).
 
--    **Sidebar** controls for member, industry, date range.
+-   **Sidebar** controls for member, industry, date range.
 
 -   **Sketch:**
 
-## 5.0 Scope of Work
+## 6.0 Scope of Work
 
 ```{r scope-of-work, echo=FALSE}
 
@@ -157,7 +161,7 @@ scope %>%
 
 ```
 
-## 6.0 Expected Outcomes
+## 7.0 Expected Outcomes
 
 Upon completion, this project will deliver a cohesive, interactive visual analytics platform that enables Ms. Moray to:
 

@@ -120,18 +120,19 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#project-proposal-visual-analytics-for-government-accountability-in-oceanus" id="toc-project-proposal-visual-analytics-for-government-accountability-in-oceanus" class="nav-link active" data-scroll-target="#project-proposal-visual-analytics-for-government-accountability-in-oceanus">Project Proposal: Visual Analytics for Government Accountability in Oceanus</a>
   <ul class="collapse">
-  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">1.0 Motivation</a></li>
-  <li><a href="#problems-and-issues-to-address" id="toc-problems-and-issues-to-address" class="nav-link" data-scroll-target="#problems-and-issues-to-address">2.0 Problems and Issues to Address</a></li>
-  <li><a href="#related-work" id="toc-related-work" class="nav-link" data-scroll-target="#related-work">3.0 Related Work</a></li>
-  <li><a href="#proposed-approach" id="toc-proposed-approach" class="nav-link" data-scroll-target="#proposed-approach">4.0 Proposed Approach</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">1.0 Introduction</a></li>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">2.0 Motivation</a></li>
+  <li><a href="#problems-and-issues-to-address" id="toc-problems-and-issues-to-address" class="nav-link" data-scroll-target="#problems-and-issues-to-address">3.0 Problems and Issues to Address</a></li>
+  <li><a href="#related-work" id="toc-related-work" class="nav-link" data-scroll-target="#related-work">4.0 Related Work</a></li>
+  <li><a href="#proposed-approach" id="toc-proposed-approach" class="nav-link" data-scroll-target="#proposed-approach">5.0 Proposed Approach</a>
   <ul class="collapse">
-  <li><a href="#network-analysis-of-members-topics-and-plans" id="toc-network-analysis-of-members-topics-and-plans" class="nav-link" data-scroll-target="#network-analysis-of-members-topics-and-plans">4.1 Network Analysis of Members, Topics, and Plans</a></li>
-  <li><a href="#geographic-analysis-of-travel-patterns" id="toc-geographic-analysis-of-travel-patterns" class="nav-link" data-scroll-target="#geographic-analysis-of-travel-patterns">4.2 Geographic Analysis of Travel Patterns</a></li>
-  <li><a href="#sentiment-heatmap-by-member-and-industry" id="toc-sentiment-heatmap-by-member-and-industry" class="nav-link" data-scroll-target="#sentiment-heatmap-by-member-and-industry">4.3 Sentiment Heatmap by Member and Industry</a></li>
-  <li><a href="#integrated-interactive-dashboard" id="toc-integrated-interactive-dashboard" class="nav-link" data-scroll-target="#integrated-interactive-dashboard">4.4 Integrated Interactive Dashboard</a></li>
+  <li><a href="#network-analysis-of-members-topics-and-plans" id="toc-network-analysis-of-members-topics-and-plans" class="nav-link" data-scroll-target="#network-analysis-of-members-topics-and-plans">5.1 Network Analysis of Members, Topics, and Plans</a></li>
+  <li><a href="#geographic-analysis-of-travel-patterns" id="toc-geographic-analysis-of-travel-patterns" class="nav-link" data-scroll-target="#geographic-analysis-of-travel-patterns">5.2 Geographic Analysis of Travel Patterns</a></li>
+  <li><a href="#sentiment-heatmap-by-member-and-industry" id="toc-sentiment-heatmap-by-member-and-industry" class="nav-link" data-scroll-target="#sentiment-heatmap-by-member-and-industry">5.3 Sentiment Heatmap by Member and Industry</a></li>
+  <li><a href="#integrated-interactive-dashboard" id="toc-integrated-interactive-dashboard" class="nav-link" data-scroll-target="#integrated-interactive-dashboard">5.4 Integrated Interactive Dashboard</a></li>
   </ul></li>
-  <li><a href="#scope-of-work" id="toc-scope-of-work" class="nav-link" data-scroll-target="#scope-of-work">5.0 Scope of Work</a></li>
-  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">6.0 Expected Outcomes</a></li>
+  <li><a href="#scope-of-work" id="toc-scope-of-work" class="nav-link" data-scroll-target="#scope-of-work">6.0 Scope of Work</a></li>
+  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">7.0 Expected Outcomes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -178,12 +179,16 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="project-proposal-visual-analytics-for-government-accountability-in-oceanus" class="level1">
 <h1>Project Proposal: Visual Analytics for Government Accountability in Oceanus</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1.0 Introduction</h2>
+<p>In this project, we tackle <strong>Mini-Challenge 2</strong> of the 2025 IEEE VAST Challenge (<a href="https://vacommunity.org/VAST+Challenge+2025+MC2">VAST Challenge MC2</a>), which provides three JSON‑based knowledge graphs—<strong>TROUT</strong> (Tourism Raises OceanUs Together), <strong>FILAH</strong> (Fishing Is Living and Heritage), and an independent <strong>journalist</strong> dataset—alongside a GeoJSON file <strong>oceanus_map.geojson</strong> (administrative basemap) and <strong>road_map.json</strong> (road/travel network). Together, these datasets capture the Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) members’ meeting participation, travel records, and discussion transcripts within their spatial context. By integrating and analyzing these interlinked sources, we will uncover network structures, spatial clustering, and sentiment trends that offer transparent, data‑driven insights into potential bias.</p>
+</section>
 <section id="motivation" class="level2">
-<h2 class="anchored" data-anchor-id="motivation">1.0 Motivation</h2>
-<p>The Commission on Overseeing the Economic Future of Oceanus (COOTEFOO) faces serious accusations of bias from two opposing interest groups: FILAH (Fishing is Living and Heritage) and TROUT (Tourism Raises OceanUs Together). Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.</p>
+<h2 class="anchored" data-anchor-id="motivation">2.0 Motivation</h2>
+<p>The COOTEFOO faces serious accusations of bias from two opposing interest groups: FILAH and TROUT . Journalist Edwina Darling Moray needs robust visual analytics tools to investigate these claims and uncover the truth about potential bias in government oversight. This project addresses a critical need for transparency in government accountability through data-driven journalism.</p>
 </section>
 <section id="problems-and-issues-to-address" class="level2">
-<h2 class="anchored" data-anchor-id="problems-and-issues-to-address">2.0 Problems and Issues to Address</h2>
+<h2 class="anchored" data-anchor-id="problems-and-issues-to-address">3.0 Problems and Issues to Address</h2>
 <p><strong>Primary Challenge</strong>: Determining whether COOTEFOO members exhibit systematic bias toward fishing or tourism industries based on their meeting participation, travel patterns, and decision-making behaviors.</p>
 <p><strong>Specific Issues</strong>:</p>
 <ol type="1">
@@ -193,16 +198,16 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 </section>
 <section id="related-work" class="level2">
-<h2 class="anchored" data-anchor-id="related-work">3.0 Related Work</h2>
+<h2 class="anchored" data-anchor-id="related-work">4.0 Related Work</h2>
 <p><strong>Knowledge Graph Visualization</strong>: Techniques such as force-directed layouts and adjacency matrices have proven effective for exploring large entity-relation networks and highlighting community structures and central actors.</p>
 <p><strong>Bias Detection in Networks</strong>: Network analysis metrics e.g.&nbsp;centrality differences will allow us to detect systemic inclinations in decision-making and group formation.</p>
 <p><strong>Comparative Dataset Analysis</strong>: Visualising differences between overlapping datasets is critical for us to assess how incomplete group records may distort perceived patterns.</p>
 </section>
 <section id="proposed-approach" class="level2">
-<h2 class="anchored" data-anchor-id="proposed-approach">4.0 Proposed Approach</h2>
+<h2 class="anchored" data-anchor-id="proposed-approach">5.0 Proposed Approach</h2>
 <p>In addition to exploratory data analysis on the respective data sets we propose the four complementary visual‐analytics modules below. Each visualisation is to address a different facet of bias detection in COOTEFOO’s activity. Each subsection includes a narrative description and a sketch before implementing it via code in R.</p>
 <section id="network-analysis-of-members-topics-and-plans" class="level3">
-<h3 class="anchored" data-anchor-id="network-analysis-of-members-topics-and-plans">4.1 Network Analysis of Members, Topics, and Plans</h3>
+<h3 class="anchored" data-anchor-id="network-analysis-of-members-topics-and-plans">5.1 Network Analysis of Members, Topics, and Plans</h3>
 <p>We will build a node‐link diagram of COOTEFOO members, discussion topics, and plans, augmented by summary statistics to surface patterns of engagement.</p>
 <p><strong>Objectives</strong></p>
 <p>Identify which members engage most heavily with fishing vs.&nbsp;tourism topics.</p>
@@ -219,7 +224,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="geographic-analysis-of-travel-patterns" class="level3">
-<h3 class="anchored" data-anchor-id="geographic-analysis-of-travel-patterns">4.2 Geographic Analysis of Travel Patterns</h3>
+<h3 class="anchored" data-anchor-id="geographic-analysis-of-travel-patterns">5.2 Geographic Analysis of Travel Patterns</h3>
 <p>We will map official trips and cluster travel endpoints to detect spatial bias in where members go.</p>
 <p><strong>Objectives</strong></p>
 <p>Show geographic distribution of fishing- vs.&nbsp;tourism-related visits.</p>
@@ -235,7 +240,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="sentiment-heatmap-by-member-and-industry" class="level3">
-<h3 class="anchored" data-anchor-id="sentiment-heatmap-by-member-and-industry">4.3 Sentiment Heatmap by Member and Industry</h3>
+<h3 class="anchored" data-anchor-id="sentiment-heatmap-by-member-and-industry">5.3 Sentiment Heatmap by Member and Industry</h3>
 <p>We will summarize the sentiment of each member’s contributions across industries in a heatmap, with drill-down details available on demand.</p>
 <p><strong>Objectives</strong></p>
 <ul>
@@ -251,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="integrated-interactive-dashboard" class="level3">
-<h3 class="anchored" data-anchor-id="integrated-interactive-dashboard">4.4 Integrated Interactive Dashboard</h3>
+<h3 class="anchored" data-anchor-id="integrated-interactive-dashboard">5.4 Integrated Interactive Dashboard</h3>
 <p>Finally, we tie together network, map, and heatmap in a single Shiny dashboard so users can filter by member or industry and see all views update in concert.</p>
 <p><strong>Objectives</strong></p>
 <ul>
@@ -268,26 +273,26 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </section>
 <section id="scope-of-work" class="level2">
-<h2 class="anchored" data-anchor-id="scope-of-work">5.0 Scope of Work</h2>
+<h2 class="anchored" data-anchor-id="scope-of-work">6.0 Scope of Work</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div id="kwapskjjhb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kwapskjjhb table {
+<div id="hpzfujzvhq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hpzfujzvhq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kwapskjjhb thead, #kwapskjjhb tbody, #kwapskjjhb tfoot, #kwapskjjhb tr, #kwapskjjhb td, #kwapskjjhb th {
+#hpzfujzvhq thead, #hpzfujzvhq tbody, #hpzfujzvhq tfoot, #hpzfujzvhq tr, #hpzfujzvhq td, #hpzfujzvhq th {
   border-style: none;
 }
 
-#kwapskjjhb p {
+#hpzfujzvhq p {
   margin: 0;
   padding: 0;
 }
 
-#kwapskjjhb .gt_table {
+#hpzfujzvhq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -313,12 +318,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_caption {
+#hpzfujzvhq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kwapskjjhb .gt_title {
+#hpzfujzvhq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -330,7 +335,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#kwapskjjhb .gt_subtitle {
+#hpzfujzvhq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -342,7 +347,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#kwapskjjhb .gt_heading {
+#hpzfujzvhq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -354,13 +359,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_bottom_border {
+#hpzfujzvhq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_col_headings {
+#hpzfujzvhq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -375,7 +380,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_col_heading {
+#hpzfujzvhq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -395,7 +400,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#kwapskjjhb .gt_column_spanner_outer {
+#hpzfujzvhq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -407,15 +412,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#kwapskjjhb .gt_column_spanner_outer:first-child {
+#hpzfujzvhq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kwapskjjhb .gt_column_spanner_outer:last-child {
+#hpzfujzvhq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kwapskjjhb .gt_column_spanner {
+#hpzfujzvhq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -427,11 +432,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#kwapskjjhb .gt_spanner_row {
+#hpzfujzvhq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kwapskjjhb .gt_group_heading {
+#hpzfujzvhq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -457,7 +462,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#kwapskjjhb .gt_empty_group_heading {
+#hpzfujzvhq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -472,15 +477,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#kwapskjjhb .gt_from_md > :first-child {
+#hpzfujzvhq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kwapskjjhb .gt_from_md > :last-child {
+#hpzfujzvhq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kwapskjjhb .gt_row {
+#hpzfujzvhq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -499,7 +504,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#kwapskjjhb .gt_stub {
+#hpzfujzvhq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,7 +517,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#kwapskjjhb .gt_stub_row_group {
+#hpzfujzvhq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -526,15 +531,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#kwapskjjhb .gt_row_group_first td {
+#hpzfujzvhq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kwapskjjhb .gt_row_group_first th {
+#hpzfujzvhq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kwapskjjhb .gt_summary_row {
+#hpzfujzvhq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -544,16 +549,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#kwapskjjhb .gt_first_summary_row {
+#hpzfujzvhq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_first_summary_row.thick {
+#hpzfujzvhq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kwapskjjhb .gt_last_summary_row {
+#hpzfujzvhq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -563,7 +568,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_grand_summary_row {
+#hpzfujzvhq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -573,7 +578,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#kwapskjjhb .gt_first_grand_summary_row {
+#hpzfujzvhq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -583,7 +588,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_last_grand_summary_row_top {
+#hpzfujzvhq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -593,11 +598,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_striped {
+#hpzfujzvhq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kwapskjjhb .gt_table_body {
+#hpzfujzvhq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -606,7 +611,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_footnotes {
+#hpzfujzvhq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -620,7 +625,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_footnote {
+#hpzfujzvhq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -629,7 +634,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#kwapskjjhb .gt_sourcenotes {
+#hpzfujzvhq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -643,7 +648,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#kwapskjjhb .gt_sourcenote {
+#hpzfujzvhq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -651,72 +656,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#kwapskjjhb .gt_left {
+#hpzfujzvhq .gt_left {
   text-align: left;
 }
 
-#kwapskjjhb .gt_center {
+#hpzfujzvhq .gt_center {
   text-align: center;
 }
 
-#kwapskjjhb .gt_right {
+#hpzfujzvhq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kwapskjjhb .gt_font_normal {
+#hpzfujzvhq .gt_font_normal {
   font-weight: normal;
 }
 
-#kwapskjjhb .gt_font_bold {
+#hpzfujzvhq .gt_font_bold {
   font-weight: bold;
 }
 
-#kwapskjjhb .gt_font_italic {
+#hpzfujzvhq .gt_font_italic {
   font-style: italic;
 }
 
-#kwapskjjhb .gt_super {
+#hpzfujzvhq .gt_super {
   font-size: 65%;
 }
 
-#kwapskjjhb .gt_footnote_marks {
+#hpzfujzvhq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kwapskjjhb .gt_asterisk {
+#hpzfujzvhq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kwapskjjhb .gt_indent_1 {
+#hpzfujzvhq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kwapskjjhb .gt_indent_2 {
+#hpzfujzvhq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kwapskjjhb .gt_indent_3 {
+#hpzfujzvhq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kwapskjjhb .gt_indent_4 {
+#hpzfujzvhq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kwapskjjhb .gt_indent_5 {
+#hpzfujzvhq .gt_indent_5 {
   text-indent: 25px;
 }
 
-#kwapskjjhb .katex-display {
+#hpzfujzvhq .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#kwapskjjhb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#hpzfujzvhq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -758,7 +763,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </section>
 <section id="expected-outcomes" class="level2">
-<h2 class="anchored" data-anchor-id="expected-outcomes">6.0 Expected Outcomes</h2>
+<h2 class="anchored" data-anchor-id="expected-outcomes">7.0 Expected Outcomes</h2>
 <p>Upon completion, this project will deliver a cohesive, interactive visual analytics platform that enables Ms.&nbsp;Moray to:</p>
 <ul>
 <li><strong>Objectively assess</strong> bias allegations against COOTEFOO members by triangulating network, spatial, and sentiment metrics.</li>

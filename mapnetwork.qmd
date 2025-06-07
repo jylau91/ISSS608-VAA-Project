@@ -1,0 +1,84 @@
+---
+title: "proto_map_vis"
+---
+
+# Introduction
+
+This Quarto document shows how to optionally load and visualize the Oceanus geographic basemap and the Oceanus road network. **Note**: neither is required to solve the core VAST Challenge, but they can help contextualize any spatial or network analyses you perform.
+
+## 1. Load Libraries
+
+```{r}
+library(sf)         # Spatial data handling
+library(jsonlite)   # JSON parsing
+library(dplyr)      # Data manipulation
+library(ggplot2)    # Plotting
+library(igraph)     # Network analysis
+library(ggraph)     # Network plotting
+```
+
+## 2. Optional: Read Oceanus Basemap (GeoJSON)
+
+```{r}
+# The basemap was created via geopandas and shapely in Python.
+oceanus_map <- st_read("data/oceanus_map.geojson")
+# Ensure it's in WGS84 (lon/lat)
+if (st_crs(oceanus_map)$epsg != 4326) {
+  oceanus_map <- st_transform(oceanus_map, 4326)
+}
+# Inspect the basemap features and CRS
+print(oceanus_map)
+```
+
+## 3. Optional: Read Road Network (JSON)
+
+```{r}
+# road_map.json follows a node-link structure with longitude/latitude coordinates.
+road_json <- fromJSON("data/road_map.json")
+# Convert list to tibble
+road_nodes <- as_tibble(road_json$nodes)
+# Inspect column names to confirm coordinate fields
+print(names(road_nodes))  # Expect 'longitude' and 'latitude'
+
+# Read edges if present
+if (!is.null(road_json$links)) {
+  road_edges <- as_tibble(road_json$links)
+} else {
+  message("No 'links' element in road_map.json")
+  road_edges <- NULL
+}
+```
+
+## 4. Convert Road Nodes to sf Points
+
+```{r}
+# Use 'longitude' and 'latitude' fields directly
+road_sf <- st_as_sf(
+  road_nodes,
+  coords = c("longitude", "latitude"),
+  crs = 4326,
+  remove = FALSE
+)
+```
+
+## 5. Plotting the Contextual Map
+
+```{r}
+g <- ggplot()
+if (exists("oceanus_map")) {
+  g <- g + geom_sf(data = oceanus_map, fill = "lightgrey", color = "black")
+}
+if (exists("road_sf") && nrow(road_sf) > 0) {
+  g <- g + geom_sf(data = road_sf, size = 0.5)
+}
+
+g + labs(title = "Oceanus Basemap & Road Network (Optional Context)") + theme_minimal()
+```
+
+## 6. Building the Road Network Graph
+
+## 7. Next Steps
+
+-   **Core analysis**: Apply spatial/network algorithms on your VAST Challenge data (e.g., centrality, community detection, spatial clustering).
+-   **Contextual mapping**: Use `st_join` or `st_distance` to relate your challenge features to these contextual layers.
+-   **Custom metrics**: Compute `betweenness(g_net)` or `closeness(g_net)` for road importance, and overlay results spatially.
