@@ -27,4 +27,4 @@ This home page serves as the entry point to our analysis, code, and visualizatio
 -   **Dashboard & Interactive Views**\
 -   **Conclusions & Recommendations**
 
-We hope this platform offers clear insights into government's accountability and fosters transparent decision-making. Enjoy exploring!
+We hope this platform offers clear insights into government's accountability and fosters transparent decision-making. Enjoy exploring!!
