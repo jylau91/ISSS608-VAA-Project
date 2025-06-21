@@ -9,6 +9,8 @@ website:
         text: Home
       - href: project_proposal.qmd
         text: Project Proposal
+      - href: Take-Home_Ex03.qmd
+        text: Take Home Exercise 03
       - about.qmd
 
 format:
