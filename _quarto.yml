@@ -17,6 +17,8 @@ website:
             text: Data Preparation
           - href: CDA_Webpage.html
             text: Confirmatory Data Analysis
+          - href: Findings.html
+            text: Visual Analysis Finding
       - href: about.html
         text: About Us
         
@@ -26,6 +28,7 @@ website:
           - href: https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/
             text: Shiny App Link
           - href: User_Guide.pdf
+            text: Shiny App Guide
 
 format:
   html:
