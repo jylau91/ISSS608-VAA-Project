@@ -1,0 +1,591 @@
+---
+title: "Data Preparation for Oceanus Bias Analysis Dashboard"
+format:
+  html:
+    toc: true
+    code-fold: false
+    number-sections: true
+    theme: cosmo
+    warning: false
+    error: false
+    message: false
+execute:
+  warning: false
+  error: false
+  message: false
+editor: visual
+number-sections: false
+---
+
+This document walks through our data preparation steps, turning raw JSON knowledge graphs into ready-to-use R objects for:
+
+-   Network visualization
+
+-   Interactive mapping
+
+-   Sentiment analysis
+
+-   Statistical validation
+
+# 1. Load Required Packages for JSON parsing, spatial data, network graphs, and statistical tests.
+
+```{r eval=FALSE}
+library(shiny)
+library(bslib)
+library(DT)
+library(plotly)
+library(visNetwork)
+library(dplyr)
+library(tidyr)
+library(igraph)
+library(shinycssloaders)
+library(jsonlite)
+library(stringr)
+library(leaflet)
+library(sf)
+library(ggplot2)
+library(purrr)
+library(janitor)
+library(WRS2)
+library(BayesFactor)
+library(ggstatsplot)
+library(gridExtra)
+```
+
+# 2. Define Topic Classifications & Key Entities
+
+We classify activities into **Fishing** vs **Tourism**, and list the six COOTEFOO board members.
+
+```{r eval=FALSE}
+fishing_labels <- c(
+  "deep_fishing_dock", "new_crane_lomark", "fish_vacuum",
+  "low_volume_crane",   "affordable_housing",    "name_inspection_office"
+)
+
+tourism_labels <- c(
+  "expanding_tourist_wharf", "statue_john_smoth", "renaming_park_himark",
+  "name_harbor_area",       "marine_life_deck",  "seafood_festival",
+  "heritage_walking_tour",   "waterfront_market", "concert"
+)
+
+cootef_members <- c(
+  "Seal", "Simone Kat", "Carol Limpet",
+  "Teddy Goldstein", "Ed Helpsford", "Tante Titan"
+)
+```
+
+# 3. Node Metadata Extraction
+
+This function reads each graph’s `nodes` array, coalesces labels, and returns a clean tibble.
+
+```{r eval=FALSE}
+load_nodes <- function(json_file) {
+  tryCatch({
+    if (!file.exists(json_file)) {
+      return(tibble(id=character(), type=character(), label=character()))
+    }
+    g <- fromJSON(json_file)
+    as_tibble(g$nodes) %>%
+      transmute(
+        id    = as.character(id),
+        type  = type,
+        label = case_when(
+          !is.na(label)      ~ label,
+          !is.na(name)       ~ name,
+          !is.na(short_title)~ short_title,
+          TRUE               ~ as.character(id)
+        )
+      )
+  }, error = function(e) {
+    tibble(id=character(), type=character(), label=character())
+  })
+}
+
+nodes_list <- list(
+  trout      = load_nodes("TROUT.json"),
+  filah      = load_nodes("FILAH.json"),
+  journalist = load_nodes("journalist.json")
+)
+
+node_types <- bind_rows(nodes_list) %>% distinct(id, type, label)
+```
+
+# 4. Parse Knowledge-Graph Edges
+
+We transform each graph’s `links` into two relationship types, preserving sentiment and reason.
+
+```{r eval=FALSE}
+parse_dataset <- function(json_file, dataset_name) {
+  if (!file.exists(json_file)) {
+    return(tibble(
+      source=character(), target=character(),
+      relationship=character(), dataset=character(),
+      topic=character(), topic_label=character(),
+      sentiment=numeric(), reason=character()
+    ))
+  }
+  tryCatch({
+    g     <- fromJSON(json_file)
+    links <- as_tibble(g$links) %>%
+      transmute(
+        source    = as.character(source),
+        target    = as.character(target),
+        role      = role,
+        sentiment = if ("sentiment" %in% names(g$links)) as.numeric(sentiment) else NA_real_,
+        reason    = if ("reason"    %in% names(g$links)) reason          else NA_character_
+      )
+
+    # Map IDs to human‐readable labels
+    nodes_raw <- as_tibble(g$nodes)
+    label_map <- nodes_raw %>%
+      transmute(
+        id          = as.character(id),
+        topic_label = case_when(
+          !is.na(label)       ~ label,
+          !is.na(name)        ~ name,
+          !is.na(short_title) ~ short_title,
+          TRUE                ~ as.character(id)
+        )
+      )
+
+    # 4.1 Meeting attendance
+    attends <- links %>%
+      filter(role=="participant", str_detect(source, "_Meeting_|_Discussion")) %>%
+      rename(plan=source, member=target) %>%
+      inner_join(
+        links %>% filter(role=="plan") %>% transmute(plan=source, topic=target),
+        by="plan"
+      ) %>%
+      transmute(
+        source       = member,
+        target       = topic,
+        relationship = "attends",
+        dataset      = dataset_name,
+        topic,
+        topic_label  = NA_character_,
+        sentiment,
+        reason
+      )
+
+    # 4.2 Travel activities
+    plan_topics <- links %>% filter(role=="plan") %>% transmute(plan=source, topic=target)
+    trip_part   <- links %>% filter(role=="participant", str_detect(source, "_Travel_|_Trip_")) %>% rename(trip=source, member=target)
+    trip_place  <- links %>% filter(role=="travel") %>% transmute(trip=source, place=target)
+
+    travels <- trip_part %>%
+      inner_join(trip_place, by="trip") %>%
+      left_join(plan_topics, by=c("trip"="plan")) %>%
+      left_join(label_map,    by=c("topic"="id")) %>%
+      transmute(
+        source       = member,
+        target       = place,
+        relationship = "travels_to",
+        dataset      = dataset_name,
+        topic,
+        topic_label  = topic_label,
+        sentiment,
+        reason
+      )
+
+    bind_rows(attends, travels) %>%
+      filter(!is.na(source), !is.na(target))
+  }, error = function(e) {
+    message("Error parsing ", json_file, ": ", e$message)
+    tibble(
+      source=character(), target=character(),
+      relationship=character(), dataset=character(),
+      topic=character(), topic_label=character(),
+      sentiment=numeric(), reason=character()
+    )
+  })
+}
+
+edges_list <- list(
+  trout      = parse_dataset("TROUT.json",      "trout"),
+  filah      = parse_dataset("FILAH.json",      "filah"),
+  journalist = parse_dataset("journalist.json", "journalist")
+)
+
+```
+
+# 5. Geographic Data Integration
+
+This helper loads:
+
+-   Regional boundaries (`.geojson`)
+
+-   Road network (`.json`)
+
+-   Node coordinates (any JSON with `lat`/`lon`)
+
+```{r eval=FALSE}
+load_geographic_data <- function() {
+  geo <- list(map=NULL, roads=NULL, nodes_with_coords=NULL)
+
+  # Boundaries
+  if (file.exists("oceanus_map.geojson")) {
+    geo$map <- tryCatch(st_read("oceanus_map.geojson", quiet=TRUE), error=function(e) NULL)
+  }
+
+  # Roads
+  if (file.exists("road_map.json")) {
+    geo$roads <- tryCatch(fromJSON("road_map.json"), error=function(e) NULL)
+  }
+
+  # Coordinates from each dataset
+  pts <- list()
+  sources <- list(
+    list(file="TROUT.json",      name="trout"),
+    list(file="FILAH.json",      name="filah"),
+    list(file="journalist.json", name="journalist")
+  )
+  for (src in sources) {
+    if (!file.exists(src$file)) next
+    js <- tryCatch(fromJSON(src$file), error=function(e) NULL)
+    if (is.null(js)||!"nodes"%in%names(js)) next
+    df <- as_tibble(js$nodes)
+    latc <- if("lat"%in%names(df)) "lat" else if("latitude"%in%names(df)) "latitude" else NA
+    lonc <- if("lon"%in%names(df)) "lon" else if("longitude"%in%names(df)) "longitude" else NA
+    if (is.na(latc)||is.na(lonc)) next
+    tmp <- df %>%
+      filter(!is.na(.data[[latc]]), !is.na(.data[[lonc]])) %>%
+      transmute(
+        id      = as.character(id),
+        type    = type,
+        lat     = as.numeric(.data[[latc]]),
+        lon     = as.numeric(.data[[lonc]]),
+        name    = coalesce(name, label, as.character(id)),
+        zone    = if("zone"%in%names(df)) zone else NA_character_,
+        dataset = src$name
+      ) %>%
+      filter(lat!=0, lon!=0)
+    if (nrow(tmp)>0) pts[[src$name]] <- tmp
+  }
+
+  if (length(pts)>0) {
+    geo$nodes_with_coords <- bind_rows(pts) %>% distinct(id, .keep_all=TRUE)
+  }
+
+  geo
+}
+
+geo_data <- load_geographic_data()
+```
+
+# 6. Sentiment Data Preparation for CDA
+
+We build a tidy (Member, Industry, Sentiment) table for parametric, non-parametric, robust, and Bayesian tests.
+
+```{r eval=FALSE}
+load_participants <- function(path) {
+  tryCatch({
+    if (!file.exists(path)) {
+      return(tibble(Member=character(), Industry=character(), Sentiment=numeric()))
+    }
+    raw <- read_json(path, simplifyVector=FALSE)
+    humans <- raw$nodes %>%
+      keep(~ !is.null(.x$type) && .x$type %in% c("entity.person","person","member")) %>%
+      map_chr("id")
+    plan_topics <- raw$links %>%
+      keep(~ !is.null(.x$role) && .x$role=="plan") %>%
+      map_dfr(~ tibble(plan=.x$source, topic=.x$target))
+
+    raw$links %>%
+      keep(~ !is.null(.x$role) && .x$role=="participant" &&
+             !is.null(.x$target) && .x$target%in%humans &&
+             !is.null(.x$sentiment)) %>%
+      map_dfr(~ tibble(
+        plan      = .x$source,
+        Member    = .x$target,
+        Sentiment = as.numeric(.x$sentiment)
+      )) %>%
+      left_join(plan_topics, by="plan") %>%
+      mutate(
+        Industry = case_when(
+          topic %in% fishing_labels ~ "Fishing",
+          topic %in% tourism_labels ~ "Tourism",
+          TRUE                      ~ NA_character_
+        )
+      ) %>%
+      filter(!is.na(Industry)) %>%
+      select(Member, Industry, Sentiment)
+  }, error=function(e){
+    tibble(Member=character(), Industry=character(), Sentiment=numeric())
+  })
+}
+
+datasets_raw <- list(
+  TROUT      = load_participants("TROUT.json"),
+  FILAH      = load_participants("FILAH.json"),
+  JOURNALIST = load_participants("journalist.json")
+)
+
+```
+
+# 7. Interactive Map Creation Function
+
+Generates a Leaflet map with:
+
+-   City markers
+
+-   Regional polygons
+
+-   Zone-colored roads
+
+-   Activity locations
+
+```{r eval=FALSE}
+create_oceanus_map <- function(df, topic_filter="All") {
+  m <- leaflet() %>%
+    addProviderTiles("CartoDB.Positron") %>%
+    setView(lng=-165, lat=39.3, zoom=8)
+
+  # City markers
+  cities <- tibble(
+    name = c("Lomark","Himark","Paackland","Centralia","Port Grove","Haacklee"),
+    lng  = c(-165.633,-165.870,-164.388,-164.566,-165.886,-165.691),
+    lat  = c(39.492,   39.699,   39.377,   39.280,   39.100,   39.032)
+  )
+  m <- m %>% addMarkers(data=cities, lng=~lng, lat=~lat,
+                        popup=~paste0("<b>",name,"</b><br>City of Oceanus"),
+                        group="Cities")
+
+  # Regions
+  if (!is.null(geo_data$map)) {
+    regs <- geo_data$map %>%
+      filter(!st_is_empty(geometry),
+             st_geometry_type(geometry)%in%c("POLYGON","MULTIPOLYGON")) %>%
+      mutate(
+        acts = sapply(Activities,
+               function(x) if (length(x)==0) "" else paste(x, collapse=", ")),
+        fill = case_when(
+          str_detect(tolower(acts),"fishing") ~ "#1E90FF",
+          str_detect(tolower(acts),"tourism") ~ "#FFA500",
+          TRUE                                ~ "#808080"
+        )
+      )
+    m <- m %>% addPolygons(data=regs, fillColor=~fill, fillOpacity=0.4,
+                           color="white", weight=2, group="Regions",
+                           popup=~paste0("<b>",Name,"</b><br>Acts: ",acts))
+  }
+
+  # Road network
+  if (!is.null(geo_data$roads)) {
+    rn <- as_tibble(geo_data$roads$nodes) %>%
+      filter(!is.na(longitude),!is.na(latitude)) %>%
+      rename(lng=longitude, lat=latitude) %>%
+      mutate(zone=as.character(zone))
+    cols <- c(commercial="#FF6B35", residential="#4ECDC4",
+              tourism="#45B7D1",  industrial="#96CEB4",
+              government="#FFEAA7")
+    for(z in unique(rn$zone)) {
+      sub <- filter(rn, zone==z)
+      m <- m %>% addCircleMarkers(data=sub, lng=~lng, lat=~lat,
+                                  radius=3, stroke=FALSE,
+                                  color=cols[z] %||% "#808080",
+                                  fillOpacity=0.7,
+                                  group=paste("Road -",str_to_title(z)))
+    }
+  }
+
+  # Activity markers
+  if (!is.null(geo_data$nodes_with_coords) && nrow(df)>0) {
+    trav <- df %>% filter(relationship=="travels_to")
+    if (topic_filter=="Fishing") trav <- filter(trav, target%in%fishing_labels)
+    if (topic_filter=="Tourism") trav <- filter(trav, target%in%tourism_labels)
+
+    td <- trav %>%
+      inner_join(geo_data$nodes_with_coords, by=c("target"="id")) %>%
+      count(target, lat, lon, sort=TRUE) %>%
+      mutate(
+        color = case_when(
+          target%in%fishing_labels ~ "#1E90FF",
+          target%in%tourism_labels ~ "#FFA500",
+          TRUE                      ~ "#8B0000"
+        ),
+        radius = sqrt(n)*3 + 4
+      )
+    m <- m %>% addCircleMarkers(data=td, lng=~lon, lat=~lat,
+                                layerId=~target,
+                                radius=~radius,
+                                color=~color, fillOpacity=0.8,
+                                popup=~paste0("<b>",target,"</b><br>Visits: ",n))
+  }
+
+  m %>% addLayersControl(
+    overlayGroups=c("Cities","Regions", grep("^Road", names(m$x$calls), value=TRUE),"Activity"),
+    options=layersControlOptions(collapsed=FALSE)
+  )
+}
+
+```
+
+# 8. Network Visualization Preparation
+
+Builds a **visNetwork** object with:
+
+-   Node grouping & colors
+
+-   Edge coloring by sentiment
+
+-   Interactive legend
+
+```{r eval=FALSE}
+make_network_vis <- function(df, output_id=NULL) {
+  if (nrow(df)==0) {
+    return(visNetwork(nodes=data.frame(id="none",label="No Data",color="#ccc"),
+                      edges=data.frame()))
+  }
+  # Remove places
+  place_ids <- node_types %>% filter(type=="place") %>% pull(id)
+  df <- filter(df, !source%in%place_ids, !target%in%place_ids)
+
+  # Nodes
+  ids <- unique(c(df$source, df$target))
+  nodes <- node_types %>% filter(id%in%ids) %>%
+    mutate(group = case_when(
+      id%in%fishing_labels ~ "Fishing",
+      id%in%tourism_labels ~ "Tourism",
+      type=="entity.person" ~ "Person",
+      TRUE                  ~ "Other"
+    )) %>%
+    mutate(color = case_when(
+      group=="Person"  ~ "#FF6B6B",
+      group=="Fishing" ~ "#1E90FF",
+      group=="Tourism" ~ "#FFA500",
+      TRUE             ~ "#888"
+    ))
+
+  # Edges
+  edges <- df %>% transmute(
+    from=source, to=target,
+    color = case_when(
+      sentiment>0  ~ "green",
+      sentiment<0  ~ "red",
+      TRUE         ~ "#888"
+    ),
+    title = paste0(relationship,
+                   ifelse(!is.na(sentiment),
+                          paste0(" (",round(sentiment,2),")"),""))
+  )
+
+  visNetwork(nodes, edges, width="100%", height="100%") %>%
+    visOptions(highlightNearest=TRUE, nodesIdSelection=TRUE) %>%
+    visLegend(addEdges = data.frame(color=c("green","red","#888"),
+                                    label=c("Positive","Negative","Neutral"),
+                                    arrows="to"))
+}
+
+```
+
+# 9. Interactivity between Visuals
+
+-   **Side‐panel controls** (`dataset_filter`, `member_filter`, `topic_filter`) feed into two reactives (`filtered_all()` / `filtered_edges_combined()`).
+-   **Activity dropdown** is rebuilt whenever `filtered_edges_combined()` changes.
+-   **Network node clicks** (`network_*_selected`) and **map marker clicks** both:
+    -   Update the same `selected_node` state
+
+    -   Highlight that node/place across all three `visNetwork` graphs
+
+    -   Set the `activity_filter`, which in turn filters the activity table.
+
+<!-- -->
+
+-   **Reset button** clears selections in networks, map, and inputs.
+-   The **activity summary** table simply re‐queries `filtered_edges_combined()` plus the current `activity_filter`.
+
+```{r eval=FALSE}
+filter_dataset <- function(df) {
+  if (!("all" %in% input$member_filter)) {
+    df <- df %>% filter(source %in% input$member_filter)
+  }
+  df
+}
+
+# 2. Reactive pipelines based on side‐panel controls
+filtered_all <- reactive({
+  bind_rows(lapply(input$dataset_filter, function(ds) {
+    filter_dataset(edges_list[[ds]])
+  }))
+})
+
+filtered_edges_combined <- reactive({
+  df <- filtered_all()
+  if (input$topic_filter == "Fishing") {
+    df <- df %>% filter(target %in% fishing_labels)
+  } else if (input$topic_filter == "Tourism") {
+    df <- df %>% filter(target %in% tourism_labels)
+  }
+  df
+})
+
+# 3. Dynamically rebuild the “Activity/Topic” dropdown
+observe({
+  locs <- filtered_edges_combined() %>%
+    pull(target) %>%
+    union(filtered_edges_combined()$topic_label) %>%
+    discard(is.na)
+  updateSelectInput(session, "activity_filter",
+    choices = c("All" = "all", sort(locs)),
+    selected = "all"
+  )
+})
+
+# 4. Cross‐component selection logic
+selected_node <- reactiveVal(NULL)
+
+# When you click a node in any network:
+for (nm in c("trout","filah","journalist")) {
+  observeEvent(input[[paste0("network_", nm, "_selected")]], {
+    id <- input[[paste0("network_", nm, "_selected")]]
+    req(id)
+    selected_node(id)
+    # highlight in the other two networks
+    other <- setdiff(c("trout","filah","journalist"), nm)
+    for (o in other) {
+      visNetworkProxy(paste0("network_", o)) %>% visSelectNodes(id = id)
+    }
+    # also filter the Activity table & map
+    updateSelectInput(session, "activity_filter", selected = id)
+  })
+}
+
+# When you click a map marker:
+observeEvent(input$combined_map_marker_click, {
+  click <- input$combined_map_marker_click
+  req(click$id)
+  selected_node(click$id)
+  # sync with networks and activity dropdown
+  for (nm in c("trout","filah","journalist")) {
+    visNetworkProxy(paste0("network_", nm)) %>%
+      visSelectNodes(id = click$id)
+  }
+  updateSelectInput(session, "activity_filter", selected = click$id)
+})
+
+# Reset button clears everything
+observeEvent(input$reset_analysis, {
+  selected_node(NULL)
+  updateSelectInput(session, "member_filter", selected = "all")
+  updateSelectInput(session, "activity_filter", selected = "all")
+  for (nm in c("trout","filah","journalist")) {
+    visNetworkProxy(paste0("network_", nm)) %>% visUnselectAll()
+  }
+})
+
+# 5. Activity Summary table reacts to the same filters
+output$activity_summary <- renderDataTable({
+  df <- filtered_edges_combined() %>%
+    filter(source %in% node_types$id[node_types$type == "entity.person"])
+  if (input$activity_filter != "all") {
+    df <- df %>%
+      filter(
+        target == input$activity_filter |
+        topic == input$activity_filter |
+        topic_label == input$activity_filter
+      )
+  }
+  # …then join labels, pivot, and render as before…
+})
+
+```
