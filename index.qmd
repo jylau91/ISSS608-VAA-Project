@@ -17,14 +17,8 @@ Our goal is to develop interactive and static visual analytics that:
 
 1.  Reveal community structures and central actors in COOTEFOO’s network.\
 2.  Uncover spatial clustering of meetings, travel, and discussion events.\
-3.  Assess temporal and thematic bias toward tourism or fishing interests.
+3.  Assess if there are any thematic bias toward tourism or fishing interests.
 
-This home page serves as the entry point to our analysis, code, and visualizations. Navigate through the tabs or sidebar to explore each component:
+This home page serves as the entry point to our analysis, code, and visualizations. Navigate through the tabs or sidebar to explore each our take on the project.
 
--   **Data Prep & Cleaning**\
--   **Network Analysis**\
--   **Spatial Analytics**\
--   **Dashboard & Interactive Views**\
--   **Conclusions & Recommendations**
-
-We hope this platform offers clear insights into government's accountability and fosters transparent decision-making. Enjoy exploring!!
+We hope this platform offers clear insights into government's accountability and fosters transparent decision-making. Enjoy exploring Oceanus through our lens!

@@ -1,0 +1,791 @@
+---
+title: "Confirmatory Data Analysis of Sentiment Bias in Oceanus"
+format:
+  html:
+    toc: true
+    code-fold: true
+    number-sections: true
+    theme: cosmo
+    warning: false
+    error: false
+    message: false
+execute:
+  warning: false
+  error: false
+  message: false
+editor: visual
+number-sections: false
+---
+
+This section presents a **statistical validation** of potential sentiment bias by COOTEFOO board members across key topics and datasets. Using **three statistical tests** — parametric (ANOVA), non-parametric (Kruskal-Wallis), and robust (Yuen’s trimmed mean) — the analysis investigates whether sentiment scores differ significantly between **Fishing** and **Tourism** topics, across datasets and individual board members.
+
+👉 *For the full set of four test types, including ANOVA (parametric), Kruskal-Wallis (non-parametric), robust, and Bayesian methods, please explore the interactive [**Shiny Dashboard**](https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/) accompanying this project.*
+
+# Load Packages
+
+The following packages are used to support data wrangling, statistical comparison, and JSON knowledge graph processing:
+
+-   **`dplyr`**, **`tidyr`**: Core tidyverse tools for data manipulation and reshaping
+-   **`jsonlite`**, **`purrr`**, **`stringr`**: Handle and parse structured JSON knowledge graph data
+-   **`janitor`**: Clean column names and tidy messy data
+-   **`ggstatsplot`**: Statistical comparison plots with effect size and test outputs
+-   **`WRS2`**: Robust ANOVA and non-parametric test functions
+-   **`BayesFactor`**: Perform Bayesian hypothesis testing for CDA
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(jsonlite)
+library(stringr)
+library(purrr)
+library(janitor)
+library(ggstatsplot)
+library(WRS2)
+library(BayesFactor)
+```
+
+# Define Topic Labels and Members
+
+This section establishes the classification of topics into two key industries — Fishing and Tourism — based on recurring topic labels across the datasets. It also defines the six key COOTEFOO board members for targeted sentiment analysis.
+
+```{r}
+fishing_labels <- c("deep_fishing_dock", "new_crane_lomark", "fish_vacuum",
+                    "low_volume_crane", "affordable_housing", "name_inspection_office")
+
+tourism_labels <- c("expanding_tourist_wharf", "statue_john_smoth", "renaming_park_himark",
+                    "name_harbor_area", "marine_life_deck", "seafood_festival",
+                    "heritage_walking_tour", "waterfront_market", "concert")
+
+cootef_members <- c("Seal", "Simone Kat", "Carol Limpet", "Teddy Goldstein", "Ed Helpsford", "Tante Titan")
+```
+
+# Load and Prepare Dataset
+
+The following function loads and parses each dataset's participant links and sentiment values, merges them with corresponding topic labels, and constructs a clean dataframe containing the board member, industry, and sentiment score for each interaction.
+
+```{r}
+load_participants <- function(path) {
+  tryCatch({
+    if (!file.exists(path)) return(tibble(Member=character(), Industry=character(), Sentiment=numeric()))
+    raw <- read_json(path, simplifyVector = FALSE)
+    humans <- raw$nodes %>%
+      keep(~ !is.null(.x$type) && .x$type %in% c("entity.person","person","member")) %>%
+      map_chr("id")
+    plan_topics <- raw$links %>%
+      keep(~ !is.null(.x$role) && .x$role == "plan") %>%
+      map_dfr(~ tibble(plan = .x$source, topic = .x$target))
+
+    raw$links %>%
+      keep(~ !is.null(.x$role) && .x$role == "participant" &&
+             !is.null(.x$target) && .x$target %in% humans &&
+             !is.null(.x$sentiment)) %>%
+      map_dfr(~ tibble(
+        plan = .x$source,
+        Member = .x$target,
+        Sentiment = as.numeric(.x$sentiment)
+      )) %>%
+      left_join(plan_topics, by = "plan") %>%
+      mutate(
+        Industry = case_when(
+          topic %in% fishing_labels ~ "Fishing",
+          topic %in% tourism_labels ~ "Tourism",
+          TRUE ~ NA_character_
+        )
+      ) %>%
+      filter(!is.na(Industry)) %>%
+      select(Member, Industry, Sentiment)
+  }, error = function(e) {
+    tibble(Member=character(), Industry=character(), Sentiment=numeric())
+  })
+}
+
+# Use relative paths to ensure Quarto compatibility
+datasets_raw <- list(
+  TROUT = load_participants("data/TROUT.json"),
+  FILAH = load_participants("data/FILAH.json"),
+  JOURNALIST = load_participants("data/journalist.json")
+)
+```
+
+# Confirmatory Data Analysis (CDA by Topic)
+
+This section presents statistical comparisons of sentiment toward Fishing and Tourism topics using different test types. Each test evaluates whether the sentiment scores differ significantly between the two industries within each dataset. The first subsection (4.1) uses **Parametric ANOVA**, followed by a second subsection (4.2) using the **Non-Parametric Kruskal-Wallis** test.
+
+## Parametric Test: ANOVA Comparison (Parametric Test)
+
+The parametric test (ANOVA) assumes normally distributed sentiment scores and compares means across groups. This method is useful for detecting whether Tourism and Fishing topics were rated differently in each dataset.
+
+::: panel-tabset
+### TROUT Dataset
+
+```{r}
+df_trout <- datasets_raw$TROUT %>% filter(!is.na(Sentiment), !is.na(Industry))
+
+if (nrow(df_trout) > 1 && all(is.finite(df_trout$Sentiment))) {
+  ggbetweenstats(df_trout, x = Industry, y = Sentiment, type = "parametric")
+} else {
+  print("Not enough valid sentiment data in TROUT dataset.")
+}
+```
+
+```{r}
+if (nrow(df_trout) > 1) {
+  summary(aov(Sentiment ~ Industry, data = df_trout))
+} else {
+  print("Not enough data to run ANOVA on TROUT.")
+}
+```
+
+### FILAH Dataset
+
+```{r}
+df_filah <- datasets_raw$FILAH %>% filter(!is.na(Sentiment), !is.na(Industry))
+
+if (nrow(df_filah) > 1 && all(is.finite(df_filah$Sentiment))) {
+  ggbetweenstats(df_filah, x = Industry, y = Sentiment, type = "parametric")
+} else {
+  print("Not enough valid sentiment data in FILAH dataset.")
+}
+```
+
+```{r}
+if (nrow(df_filah) > 1) {
+  summary(aov(Sentiment ~ Industry, data = df_filah))
+} else {
+  print("Not enough data to run ANOVA on FILAH.")
+}
+```
+
+### JOURNALIST Dataset
+
+```{r}
+df_journalist <- datasets_raw$JOURNALIST %>% filter(!is.na(Sentiment), !is.na(Industry))
+
+if (nrow(df_journalist) > 1 && all(is.finite(df_journalist$Sentiment))) {
+  ggbetweenstats(df_journalist, x = Industry, y = Sentiment, type = "parametric")
+} else {
+  print("Not enough valid sentiment data in JOURNALIST dataset.")
+}
+```
+
+```{r}
+if (nrow(df_journalist) > 1) {
+  summary(aov(Sentiment ~ Industry, data = df_journalist))
+} else {
+  print("Not enough data to run ANOVA on JOURNALIST.")
+}
+```
+:::
+
+::: {.callout-note title="CDA by Topic – Parametric ANOVA Insights" appearance="simple" icon="true"}
+-   **TROUT Dataset:** Fishing topics had a higher average sentiment (0.64 vs. 0.16), with the ANOVA test yielding *p = 0.0426*. While statistically significant, the result offers only **moderate evidence** and does **not strongly support** TROUT’s claim of anti-Tourism bias.
+
+-   **FILAH Dataset:** Tourism topics were rated significantly higher (mean = 0.71) than Fishing (mean = -0.10), with a highly significant result (*p \< 0.001*). This provides **strong evidence** in favor of FILAH’s claim that COOTEFOO members are **biased toward Tourism**.
+
+-   **JOURNALIST Dataset:** A similar trend appears (Tourism = 0.68 vs. Fishing = 0.46), but the result was **not statistically significant** (*p = 0.0802*). This suggests a **weaker, observational pattern** rather than conclusive evidence from this external dataset.
+:::
+
+## Non-Parametric Test: Kruskal-Wallis
+
+This section repeats the same industry-based sentiment comparison using the **Kruskal-Wallis test**, a non-parametric method that does not assume normality. It is suitable for ordinal or skewed sentiment distributions.
+
+::: panel-tabset
+### TROUT Dataset
+
+```{r}
+if (nrow(df_trout) > 1 && all(is.finite(df_trout$Sentiment))) {
+  ggbetweenstats(df_trout, x = Industry, y = Sentiment, type = "nonparametric")
+} else {
+  print("Not enough valid sentiment data in TROUT dataset.")
+}
+```
+
+```{r}
+if (nrow(df_trout) > 1) {
+  kruskal.test(Sentiment ~ Industry, data = df_trout)
+} else {
+  print("Not enough data to run Kruskal-Wallis on TROUT.")
+}
+```
+
+### FILAH Dataset
+
+```{r}
+if (nrow(df_filah) > 1 && all(is.finite(df_filah$Sentiment))) {
+  ggbetweenstats(df_filah, x = Industry, y = Sentiment, type = "nonparametric")
+} else {
+  print("Not enough valid sentiment data in FILAH dataset.")
+}
+```
+
+```{r}
+if (nrow(df_filah) > 1) {
+  kruskal.test(Sentiment ~ Industry, data = df_filah)
+} else {
+  print("Not enough data to run Kruskal-Wallis on FILAH.")
+}
+```
+
+### JOURNALIST Dataset
+
+```{r}
+if (nrow(df_journalist) > 1 && all(is.finite(df_journalist$Sentiment))) {
+  ggbetweenstats(df_journalist, x = Industry, y = Sentiment, type = "nonparametric")
+} else {
+  print("Not enough valid sentiment data in JOURNALIST dataset.")
+}
+```
+
+```{r}
+if (nrow(df_journalist) > 1) {
+  kruskal.test(Sentiment ~ Industry, data = df_journalist)
+} else {
+  print("Not enough data to run Kruskal-Wallis on JOURNALIST.")
+}
+```
+:::
+
+::: {.callout-note title="CDA by Topic – Non-Parametric Kruskal-Wallis Insights" appearance="simple" icon="true"}
+-   **TROUT Dataset:** Sentiment was slightly higher for Fishing, but the non-parametric test showed p-value of 0.0714 which is not **significant**.
+
+-   **FILAH Dataset:** Strong evidence of a Tourism bias was again detected with p-value = 0.0009056, confirming FILAH’s claim across multiple test types.
+
+-   **JOURNALIST Dataset:** Differences were not statistically significant with p-value = 0.3801, suggesting the journalist data is more balanced or neutral.
+:::
+
+## Robust Test: Yuen’s Trimmed Mean Comparison
+
+This section applies a robust t-test (Yuen’s test), which uses trimmed means and winsorized variances, offering greater resistance to outliers and non-normal distributions. It compares sentiment scores for Fishing vs. Tourism topics across each dataset.
+
+::: panel-tabset
+### TROUT Dataset
+
+```{r}
+# Plot
+if (nrow(df_trout) > 1 && all(is.finite(df_trout$Sentiment))) {
+  ggbetweenstats(
+    data = df_trout,
+    x = Industry,
+    y = Sentiment,
+    type = "robust",
+    title = "TROUT Dataset – Robust Comparison of Sentiment by Topic"
+  )
+} else {
+  print("Not enough valid sentiment data in TROUT dataset.")
+}
+```
+
+```{r}
+# Robust Yuen's Test
+if (nrow(df_trout) > 1) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_trout)
+} else {
+  print("Not enough data to run Yuen’s test on TROUT.")
+}
+```
+
+### FILAH Dataset
+
+```{r}
+# Plot
+if (nrow(df_filah) > 1 && all(is.finite(df_filah$Sentiment))) {
+  ggbetweenstats(
+    data = df_filah,
+    x = Industry,
+    y = Sentiment,
+    type = "robust",
+    title = "FILAH Dataset – Robust Comparison of Sentiment by Topic"
+  )
+} else {
+  print("Not enough valid sentiment data in FILAH dataset.")
+}
+```
+
+```{r}
+# Robust Yuen's Test
+if (nrow(df_filah) > 1) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_filah)
+} else {
+  print("Not enough data to run Yuen’s test on FILAH.")
+}
+```
+
+### JOURNALIST Dataset
+
+```{r}
+# Plot
+if (nrow(df_journalist) > 1 && all(is.finite(df_journalist$Sentiment))) {
+  ggbetweenstats(
+    data = df_journalist,
+    x = Industry,
+    y = Sentiment,
+    type = "robust",
+    title = "JOURNALIST Dataset – Robust Comparison of Sentiment by Topic"
+  )
+} else {
+  print("Not enough valid sentiment data in JOURNALIST dataset.")
+}
+```
+
+```{r}
+# Robust Yuen's Test
+if (nrow(df_journalist) > 1) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_journalist)
+} else {
+  print("Not enough data to run Yuen’s test on JOURNALIST.")
+}
+```
+:::
+
+::: {.callout-note title="CDA by Topic – Robust Yuen’s Test Insights" appearance="simple" icon="true"}
+TROUT Dataset: Fishing received a higher trimmed mean sentiment (0.71) than Tourism (0.13), with a p-value = 0.0613. While not statistically significant, the result is borderline with a moderate effect size (0.55), suggesting some practical difference but not enough evidence to confirm bias.
+
+FILAH Dataset: Tourism sentiment was significantly higher (0.75) than Fishing (−0.09), with a p-value = 0.0235. This indicates a statistically significant bias in favor of Tourism, consistent with FILAH's narrative, supported by a large effect size (0.91).
+
+JOURNALIST Dataset: Although Tourism again showed a higher sentiment (0.77 vs. 0.63), the p-value = 0.4247 was not statistically significant, and the effect size (0.18) was small. This suggests a more neutral or balanced stance in the Journalist dataset.
+:::
+
+# Confirmatory Data Analysis (CDA by Dataset)
+
+This section evaluates whether sentiment scores for **Tourism** and **Fishing** topics differ significantly **across datasets** (TROUT, FILAH, JOURNALIST). It aims to determine if specific datasets portray systematically more positive or negative sentiment for a given industry.
+
+## Parametric Test: ANOVA
+
+This test uses **ANOVA** to assess whether the average sentiment differs across the three datasets.
+
+```{r}
+# Combine all datasets and label their source
+combined_data <- bind_rows(datasets_raw, .id = "Dataset")
+
+# Create subsets for Tourism and Fishing
+tourism_data <- combined_data %>%
+  filter(Industry == "Tourism", !is.na(Sentiment))
+
+fishing_data <- combined_data %>%
+  filter(Industry == "Fishing", !is.na(Sentiment))
+```
+
+::: panel-tabset
+### Tourism Topics for all Three datasets Comparison
+
+```{r}
+ggbetweenstats(tourism_data, x = Dataset, y = Sentiment, type = "parametric")
+
+```
+
+```{r}
+summary(aov(Sentiment ~ Dataset, data = tourism_data))
+
+```
+
+### Fishing Topics for all Three datasets Comparison
+
+```{r}
+ggbetweenstats(fishing_data, x = Dataset, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Dataset, data = fishing_data))
+
+```
+:::
+
+::: {.callout-note title="CDA by Dataset – Parametric ANOVA Insights" appearance="simple" icon="true"}
+Tourism Topics: Statistically significant differences were found (p \< 0.05), at 0.00147 with FILAH expressing the strongest positive sentiment. This suggests dataset-specific framing in favor of Tourism.
+
+Fishing Topics: Sentiment also differ significantly with p-value at 0.0276 across datasets, though not as strong as the Tourism topic.
+:::
+
+## Non-Parametric Test: Kruskal-Wallis
+
+This section repeats the comparison using the Kruskal-Wallis test, which is suitable for non-normal or ordinal data.
+
+::: panel-tabset
+### Tourism Topics for all Three datasets Comparison
+
+```{r}
+ggbetweenstats(tourism_data, x = Dataset, y = Sentiment, type = "nonparametric")
+
+```
+
+```{r}
+kruskal.test(Sentiment ~ Dataset, data = tourism_data)
+```
+
+### Fishing Topics for all Three datasets Comparison
+
+```{r}
+ggbetweenstats(fishing_data, x = Dataset, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+kruskal.test(Sentiment ~ Dataset, data = fishing_data)
+
+```
+:::
+
+::: {.callout-note title="CDA by Dataset – Non-Parametric Kruskal-Wallis Insights" appearance="simple" icon="true"}
+Tourism Topics: A p-value of 0.01186 confirms the parametric result, showing significant variation in sentiment toward Tourism across datasets, with FILAH notably distinct.
+
+Fishing Topics: A p-value of 0.02015 suggests that sentiment framing toward Fishing also differs significantly across the datasets, need to perform additional test to confirm.
+:::
+
+## Robust Test: Yuen’s Trimmed Mean Comparison
+
+This section uses Yuen’s test to perform a robust comparison of sentiment scores across datasets, for both Tourism and Fishing topics. The visualizations use trimmed means and effect size indicators to mitigate the influence of outliers and non-normal distributions.
+
+::: panel-tabset
+### Tourism Topics for all Three Datasets Comparison
+
+```{r}
+
+ggbetweenstats(
+  data = tourism_data,
+  x = Dataset,
+  y = Sentiment,
+  type = "robust",
+  title = "Tourism Topics – Robust Comparison of Sentiment across Datasets"
+)
+```
+
+```{r}
+# Run robust test manually across datasets for Tourism
+WRS2::t1way(Sentiment ~ Dataset, data = tourism_data)
+```
+
+### Fishing Topics for all Three Datasets Comparison
+
+```{r}
+ggbetweenstats(
+  data = fishing_data,
+  x = Dataset,
+  y = Sentiment,
+  type = "robust",
+  title = "Fishing Topics – Robust Comparison of Sentiment across Datasets"
+)
+```
+
+```{r}
+# Run robust test manually across datasets for Fishing
+WRS2::t1way(Sentiment ~ Dataset, data = fishing_data)
+```
+:::
+
+::: {.callout-note title="CDA by Dataset – Robust Yuen’s Test Insights" appearance="simple" icon="true"}
+Tourism Topics: The robust test found a statistically significant difference in sentiment across datasets (p = 0.0368), with FILAH and JOURNALIST both showing high trimmed means (0.75 and 0.77), while TROUT was much lower (0.13). This confirms earlier findings that TROUT consistently portrays Tourism less positively, supporting claims of framing differences. Effect size was moderate to large at 0.64.
+
+Fishing Topics: Although the robust test showed a non-significant p-value (p = 0.0872), the effect size was moderate at 0.56, indicating some practical difference. TROUT showed the highest sentiment for Fishing (0.71), while FILAH had a negative trimmed mean (−0.09), suggesting contrasting framing, though not conclusively supported statistically.
+:::
+
+# Confirmatory Data Analysis (CDA by Board Member)
+
+This section explores whether individual COOTEFOO board members demonstrate **statistically significant differences in sentiment** between Tourism and Fishing topics. We use both parametric (ANOVA) and non-parametric (Kruskal-Wallis) tests to evaluate sentiment bias for all six members.
+
+```{r}
+# Prepare subsets for each member
+df_seal <- combined_data %>% filter(Member == "Seal", !is.na(Sentiment), !is.na(Industry))
+df_teddy <- combined_data %>% filter(Member == "Teddy Goldstein", !is.na(Sentiment), !is.na(Industry))
+df_simone <- combined_data %>% filter(Member == "Simone Kat", !is.na(Sentiment), !is.na(Industry))
+df_carol <- combined_data %>% filter(Member == "Carol Limpet", !is.na(Sentiment), !is.na(Industry))
+df_ed <- combined_data %>% filter(Member == "Ed Helpsford", !is.na(Sentiment), !is.na(Industry))
+df_tante <- combined_data %>% filter(Member == "Tante Titan", !is.na(Sentiment), !is.na(Industry))
+```
+
+## Parametric Test: ANOVA by Member
+
+The following tests assume normality and compare mean sentiment toward the two industries for each board member.
+
+::: panel-tabset
+### Seal
+
+```{r}
+ggbetweenstats(df_seal, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Industry, data = df_seal))
+```
+
+### Teddy Goldstein
+
+```{r}
+ggbetweenstats(df_teddy, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Industry, data = df_teddy))
+```
+
+### Simone Kat
+
+```{r}
+ggbetweenstats(df_simone, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Industry, data = df_simone))
+```
+
+### Carol Limpet
+
+```{r}
+ggbetweenstats(df_carol, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+if (nrow(df_carol) > 1 && n_distinct(df_carol$Industry) >= 2) {
+  summary(aov(Sentiment ~ Industry, data = df_carol))
+} else {
+  print("Not enough topic variety to run ANOVA for Carol Limpet.")
+}
+
+```
+
+### Ed Helpsford
+
+```{r}
+ggbetweenstats(df_ed, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Industry, data = df_ed))
+```
+
+### Tante Titan
+
+```{r}
+ggbetweenstats(df_tante, x = Industry, y = Sentiment, type = "parametric")
+```
+
+```{r}
+summary(aov(Sentiment ~ Industry, data = df_tante))
+```
+:::
+
+::: {.callout-note title="CDA by Member – Parametric ANOVA Insights" appearance="simple" icon="true"}
+Seal and Simone Kat show statistically significant preference for Tourism.
+
+Teddy Goldstein shows preference toward Fishing.
+
+Carol Limpet and Ed Helpsford show no significant differences.
+
+Tante Titan shows a subtle but not significant preference for Tourism.
+:::
+
+## Non-Parametric Test: Kruskal-Wallis by Member
+
+This version of the test relaxes normality assumptions and compares rank-based sentiment distributions.
+
+::: panel-tabset
+### Seal
+
+```{r}
+ggbetweenstats(df_seal, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+
+kruskal.test(Sentiment ~ Industry, data = df_seal)
+```
+
+### Teddy Goldstein
+
+```{r}
+ggbetweenstats(df_teddy, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+kruskal.test(Sentiment ~ Industry, data = df_teddy)
+```
+
+### Simone Kat
+
+```{r}
+ggbetweenstats(df_simone, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+kruskal.test(Sentiment ~ Industry, data = df_simone)
+```
+
+### Carol Limpet
+
+```{r}
+ggbetweenstats(df_carol, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+if (nrow(df_carol) > 1 && n_distinct(df_carol$Industry) >= 2) {
+  kruskal.test(Sentiment ~ Industry, data = df_carol)
+} else {
+  print("Not enough topic variety to run Kruskal-Wallis for Carol Limpet.")
+}
+
+```
+
+### Ed Helpsford
+
+```{r}
+ggbetweenstats(df_ed, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+### Tante Titan
+
+```{r}
+ggbetweenstats(df_tante, x = Industry, y = Sentiment, type = "nonparametric")
+```
+
+```{r}
+kruskal.test(Sentiment ~ Industry, data = df_tante)
+```
+:::
+
+::: {.callout-note title="CDA by Member – Non-Parametric Kruskal-Wallis Insights" appearance="simple" icon="true"}
+Seal: Displays a statistically significant preference for Tourism (p = 0.016), supporting the idea of a directional bias.
+
+Teddy Goldstein: Shows strong preference toward Fishing, with a significant difference (p = 0.004), contrasting with the broader pro-Tourism trend. However, this should be investigated further.
+
+Simone Kat: Exhibits a highly significant bias in favor of Tourism (p \< 0.001), with a wide gap in median sentiment between topics.
+
+Carol Limpet: Sentiment scores were only present in FILAH and JOURNALIST, and limited to Tourism topics only, hence no comparison could be made. This prevents any conclusive test on bias.
+
+Ed Helpsford: Shows no statistically significant difference (p = 0.08), though a slight numerical preference for Fishing is observed.
+
+Tante Titan: Sentiment levels were equal across both industries, and the test was not significant (p = 0.20), indicating a neutral sentiment distribution.
+:::
+
+## Robust Test: Yuen’s Trimmed Mean
+
+This section uses a robust comparison of sentiment between Tourism and Fishing topics for each COOTEFOO board member. Yuen’s test, which is less sensitive to outliers and non-normal distributions, complements the previous parametric and non-parametric results.
+
+::: panel-tabset
+### Seal
+
+```{r}
+ggbetweenstats(df_seal, x = Industry, y = Sentiment, type = "robust")
+```
+
+```{r}
+
+if (nrow(df_seal) > 1 && n_distinct(df_seal$Industry) >= 2) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_seal)
+} else {
+  print("Not enough data to run Yuen’s test for Seal.")
+}
+```
+
+### Teddy Goldstein
+
+```{r}
+ggbetweenstats(df_teddy, x = Industry, y = Sentiment, type = "robust")
+```
+
+```{r}
+if (nrow(df_teddy) > 1 && n_distinct(df_teddy$Industry) >= 2) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_teddy)
+} else {
+  print("Not enough data to run Yuen’s test for Teddy Goldstein.")
+}
+```
+
+### Simone Kat
+
+```{r}
+
+ggbetweenstats(df_simone, x = Industry, y = Sentiment, type = "robust")
+```
+
+```{r}
+if (nrow(df_simone) > 1 && n_distinct(df_simone$Industry) >= 2) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_simone)
+} else {
+  print("Not enough data to run Yuen’s test for Simone Kat")
+}
+```
+
+### Carol Limpet
+
+```{r}
+
+ggbetweenstats(df_carol, x = Industry, y = Sentiment, type = "robust")
+```
+
+```{r}
+
+if (nrow(df_carol) > 1 && n_distinct(df_carol$Industry) >= 2) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_carol)
+} else {
+  print("Not enough data to run Yuen’s test for Carol Limpet.")
+}
+```
+
+### Ed Helpsford
+
+```{r}
+
+ggbetweenstats(df_ed, x = Industry, y = Sentiment, type = "robust")
+```
+
+```{r}
+if (nrow(df_ed) > 1 && n_distinct(df_ed$Industry) >= 2) {
+  WRS2::yuen(Sentiment ~ Industry, data = df_ed)
+} else {
+  print("Not enough data to run Yuen’s test for Ed Helpsford.")
+}
+```
+
+### Tante Titan
+
+```{r}
+
+# Safely check and run Yuen’s test for Tante Titan
+if (exists("df_tante")) {
+  valid_df <- df_tante %>%
+    filter(Industry %in% c("Tourism", "Fishing")) %>%
+    filter(!is.na(Sentiment), is.finite(Sentiment))
+  
+  group_counts <- table(valid_df$Industry)
+  
+  # Additional check: each group must have > 1 unique value (non-zero std dev)
+  sd_check <- valid_df %>%
+    group_by(Industry) %>%
+    summarise(sd = sd(Sentiment), .groups = "drop") %>%
+    filter(!is.na(sd) & sd > 0)
+  
+  if (all(c("Tourism", "Fishing") %in% names(group_counts)) &&
+      all(group_counts >= 2) &&
+      nrow(sd_check) == 2) {
+    
+    WRS2::yuen(Sentiment ~ Industry, data = valid_df)
+    
+  } else {
+    print("Not enough valid and variable data to run Yuen’s test for Tante Titan.")
+  }
+  
+} else {
+  print("df_tante does not exist.")
+}
+
+
+```
+:::
+
+::: {.callout-note title="CDA by Member – Robust Yuen’s Test Insights" appearance="simple" icon="true"}
+Seal: Mean sentiment was higher for Tourism (0.15) compared to Fishing (0.07), but the result was not statistically significant (p = 0.1136). This suggests only a mild directional tendency and no strong evidence of bias.
+
+Teddy Goldstein: Strong evidence of pro-Fishing bias with a very high trimmed mean for Fishing (0.92) and negative sentiment for Tourism (−0.50). The test was highly significant (p = 5.44e−05), and the effect size was very large. This result confirms Teddy’s strong preference for Fishing topics, but this will be investigated further in other parts of the Shiny app and Results Analysis.
+
+Simone Kat: Tourism received a much higher trimmed mean (0.93) than Fishing (−0.21), with a significant result (p = 0.0116). This supports a clear bias in favor of Tourism, with a large effect size of 0.82.
+
+Carol Limpet: Sentiment values were only available for Tourism topics (n = 14), and no comparison could be made. As a result, the robust test could not be run, and no statistical conclusion can be drawn.
+
+Ed Helpsford: The robust test showed significantly higher sentiment toward Fishing (1.00) than Tourism (0.50), with p = 0.0409. This suggests a statistically meaningful preference for Fishing topics, although the confidence interval included 0, indicating a moderate effect.
+
+Tante Titan: Data was either insufficient or lacked variation in both groups. As This person sentiment only present in the Journalist dataset.
+:::
+
+# CDA Conclusion
+
+Across all three CDA dimensions (by topic, by dataset, by member), the findings provide **statistical validation of a directional bias toward Tourism**, especially in the FILAH dataset and for certain members like Simone Kat. In contrast, claims of **Fishing-favoring bias** (e.g., by TROUT) appear **less supported or inconclusive**. These findings align with the hypothesis that sentiment framing differs across datasets and among COOTEFOO members.
+
+👉 *For full details and all four statistical tests including Bayesian analysis, refer to the interactive [**Shiny Dashboard**](https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/).*

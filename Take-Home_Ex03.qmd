@@ -14,7 +14,7 @@ execute:
   freeze: true
 ---
 
-# Take Home Exercise 3
+# Prototype  (ISSS608-Take Home Exercise 3)
 
 Link to VAST Challenge 2025, [Mini-Challenge 2](https://vast-challenge.github.io/2025/MC2.html).
 

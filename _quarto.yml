@@ -5,13 +5,24 @@ website:
   title: "ISSS608-VAA-Project"
   navbar:
     left:
-      - href: index.qmd
+      - href: index.html
         text: Home
-      - href: project_proposal.qmd
-        text: Project Proposal
-      - href: Take-Home_Ex03.qmd
-        text: Take Home Exercise 03
-      - about.qmd
+      - text: Project
+        menu:
+          - href: project_proposal.html
+            text: Project Proposal
+          - href: Take-Home_Ex03.html
+            text: Prototype
+          - href: data-prep.html
+            text: Data Preparation
+          - href: CDA_Webpage.html
+            text: Confirmiatory Data Analysis
+      - href: about.html
+        text: About Us
+        
+    right: 
+      - href: https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/
+        text: 📱 ShinyApp
 
 format:
   html:
