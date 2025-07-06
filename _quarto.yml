@@ -16,7 +16,7 @@ website:
           - href: data-prep.html
             text: Data Preparation
           - href: CDA_Webpage.html
-            text: Confirmiatory Data Analysis
+            text: Confirmatory Data Analysis
       - href: about.html
         text: About Us
         
