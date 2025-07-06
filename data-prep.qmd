@@ -1,5 +1,5 @@
 ---
-title: "Data Preparation for Oceanus Bias Analysis Dashboard"
+title: "Data Preparation for R Shiny App - Fishing for Biasness!"
 format:
   html:
     toc: true
@@ -17,17 +17,11 @@ editor: visual
 number-sections: false
 ---
 
-This document walks through our data preparation steps, turning raw JSON knowledge graphs into ready-to-use R objects for:
+This document walks through our data preparation steps, turning raw JSON knowledge graphs into ready-to-use R objects for our R Shiny App.
 
--   Network visualization
+# 1. Load Required Packages
 
--   Interactive mapping
-
--   Sentiment analysis
-
--   Statistical validation
-
-# 1. Load Required Packages for JSON parsing, spatial data, network graphs, and statistical tests.
+All essential R packages are loaded at the outset, covering JSON parsing, spatial/geographic data handling, network and interactive visualization, and statistical analysis. This ensures a flexible and reproducible environment for data wrangling, enrichment, and visualisation.
 
 ```{r eval=FALSE}
 library(shiny)
@@ -54,7 +48,7 @@ library(gridExtra)
 
 # 2. Define Topic Classifications & Key Entities
 
-We classify activities into **Fishing** vs **Tourism**, and list the six COOTEFOO board members.
+Activities are systematically classified as "Fishing" or "Tourism" using topic labels within the dataset, and the six COOTEFOO board members are enumerated. This step standardizes disparate data sources and enables meaningful cross-dataset and cross-member comparisons.
 
 ```{r eval=FALSE}
 fishing_labels <- c(
@@ -76,7 +70,7 @@ cootef_members <- c(
 
 # 3. Node Metadata Extraction
 
-This function reads each graph’s `nodes` array, coalesces labels, and returns a clean tibble.
+Each dataset’s node list is parsed and harmonized into a unified tibble, coalescing multiple label fields into a single, human-readable identifier. This registry is foundational for all subsequent network and spatial analyses, ensuring consistent entity tracking across views.
 
 ```{r eval=FALSE}
 load_nodes <- function(json_file) {
@@ -112,7 +106,7 @@ node_types <- bind_rows(nodes_list) %>% distinct(id, type, label)
 
 # 4. Parse Knowledge-Graph Edges
 
-We transform each graph’s `links` into two relationship types, preserving sentiment and reason.
+The knowledge graph’s links are transformed into structured edge tables, capturing both meeting attendance and travel activities. Sentiment scores and reasoning text are preserved at the edge level, enabling nuanced sentiment and bias analysis. All relationships are mapped to their respective topics and datasets, supporting granular filtering and aggregation.
 
 ```{r eval=FALSE}
 parse_dataset <- function(json_file, dataset_name) {
@@ -210,13 +204,7 @@ edges_list <- list(
 
 # 5. Geographic Data Integration
 
-This helper loads:
-
--   Regional boundaries (`.geojson`)
-
--   Road network (`.json`)
-
--   Node coordinates (any JSON with `lat`/`lon`)
+Regional boundaries (GeoJSON), road networks, and node coordinates are loaded and merged. This spatial layer enables mapping of activities, contextualizing member actions within the physical geography of Oceanus. The pipeline flexibly detects and processes coordinate fields from any dataset, ensuring spatial completeness[1]{.underline}.
 
 ```{r eval=FALSE}
 load_geographic_data <- function() {
@@ -274,7 +262,7 @@ geo_data <- load_geographic_data()
 
 # 6. Sentiment Data Preparation for CDA
 
-We build a tidy (Member, Industry, Sentiment) table for parametric, non-parametric, robust, and Bayesian tests.
+Sentiment values from participant links are extracted, linked to industry classification, and organized into tidy tables. This enables robust statistical testing (parametric, non-parametric, robust, Bayesian) of sentiment differences by topic, dataset, and individual member, forming the backbone of the dashboard’s confirmatory analytics.
 
 ```{r eval=FALSE}
 load_participants <- function(path) {
@@ -324,15 +312,7 @@ datasets_raw <- list(
 
 # 7. Interactive Map Creation Function
 
-Generates a Leaflet map with:
-
--   City markers
-
--   Regional polygons
-
--   Zone-colored roads
-
--   Activity locations
+A modular function generates a Leaflet map with layered content: city markers, regional polygons, color-coded road networks, and activity locations. Markers and polygons are dynamically styled and filtered based on user selections, enabling spatial exploration of member actions and sentiment patterns.
 
 ```{r eval=FALSE}
 create_oceanus_map <- function(df, topic_filter="All") {
@@ -422,13 +402,7 @@ create_oceanus_map <- function(df, topic_filter="All") {
 
 # 8. Network Visualization Preparation
 
-Builds a **visNetwork** object with:
-
--   Node grouping & colors
-
--   Edge coloring by sentiment
-
--   Interactive legend
+Network graphs are constructed with nodes grouped and colored by type (person, organization, fishing topic, tourism topic), and edges colored by sentiment. Interactive legends, node selection, and cross-highlighting logic are implemented to facilitate intuitive exploration of relational data and bias patterns.
 
 ```{r eval=FALSE}
 make_network_vis <- function(df, output_id=NULL) {
@@ -480,19 +454,7 @@ make_network_vis <- function(df, output_id=NULL) {
 
 # 9. Interactivity between Visuals
 
--   **Side‐panel controls** (`dataset_filter`, `member_filter`, `topic_filter`) feed into two reactives (`filtered_all()` / `filtered_edges_combined()`).
--   **Activity dropdown** is rebuilt whenever `filtered_edges_combined()` changes.
--   **Network node clicks** (`network_*_selected`) and **map marker clicks** both:
-    -   Update the same `selected_node` state
-
-    -   Highlight that node/place across all three `visNetwork` graphs
-
-    -   Set the `activity_filter`, which in turn filters the activity table.
-
-<!-- -->
-
--   **Reset button** clears selections in networks, map, and inputs.
--   The **activity summary** table simply re‐queries `filtered_edges_combined()` plus the current `activity_filter`.
+-   User controls for dataset, member, topic, and activity selection drive all visualizations. Selections in one component (e.g., clicking a map marker or network node) propagate across all views, maintaining synchronized filtering and highlighting. The activity summary table and heatmap are dynamically rebuilt to reflect current filters, supporting iterative, question-driven analysis. A reset button restores the dashboard to its default state, enabling rapid re-exploration
 
 ```{r eval=FALSE}
 filter_dataset <- function(df) {
@@ -589,3 +551,15 @@ output$activity_summary <- renderDataTable({
 })
 
 ```
+
+# 10. Overall Design of Shiny App
+
+**Data Quality and Consistency:** The pipeline rigorously cleans, harmonizes, and validates all input data, ensuring reliability and comparability across sources. This minimizes the risk of misleading insights due to inconsistencies or missing values
+
+**Modularity and Reproducibility:** Each function is modular, facilitating maintenance and extension. The workflow is fully reproducible, supporting future updates or re-analysis as new data becomes available.
+
+**Interactivity and Transparency:** The dashboard’s design emphasizes transparency and user-driven exploration. All filters, selections, and statistical results are immediately reflected in the visualizations, empowering users to interrogate the data from multiple perspectives.
+
+**Comprehensive Statistical Validation:** The data structures are tailored to support advanced statistical testing of sentiment bias, both at the aggregate and individual level, ensuring that findings are robust and evidence-based.
+
+The above pipeline transforms raw, heterogeneous knowledge graphs into a rich, interactive analytical environment. It enables users to explore, visualize, and statistically validate patterns of sentiment and bias in the Oceanus debate, leveraging the full power of R, Shiny, and modern data science best practices.

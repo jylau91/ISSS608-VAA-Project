@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Preparation for Oceanus Bias Analysis Dashboard – ISSS608-VAA-Project</title>
+<title>Data Preparation for R Shiny App - Fishing for Biasness! – ISSS608-VAA-Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#load-required-packages-for-json-parsing-spatial-data-network-graphs-and-statistical-tests." id="toc-load-required-packages-for-json-parsing-spatial-data-network-graphs-and-statistical-tests." class="nav-link active" data-scroll-target="#load-required-packages-for-json-parsing-spatial-data-network-graphs-and-statistical-tests."><span class="header-section-number">1</span> 1. Load Required Packages for JSON parsing, spatial data, network graphs, and statistical tests.</a></li>
+  <li><a href="#load-required-packages" id="toc-load-required-packages" class="nav-link active" data-scroll-target="#load-required-packages"><span class="header-section-number">1</span> 1. Load Required Packages</a></li>
   <li><a href="#define-topic-classifications-key-entities" id="toc-define-topic-classifications-key-entities" class="nav-link" data-scroll-target="#define-topic-classifications-key-entities"><span class="header-section-number">2</span> 2. Define Topic Classifications &amp; Key Entities</a></li>
   <li><a href="#node-metadata-extraction" id="toc-node-metadata-extraction" class="nav-link" data-scroll-target="#node-metadata-extraction"><span class="header-section-number">3</span> 3. Node Metadata Extraction</a></li>
   <li><a href="#parse-knowledge-graph-edges" id="toc-parse-knowledge-graph-edges" class="nav-link" data-scroll-target="#parse-knowledge-graph-edges"><span class="header-section-number">4</span> 4. Parse Knowledge-Graph Edges</a></li>
@@ -201,6 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#interactive-map-creation-function" id="toc-interactive-map-creation-function" class="nav-link" data-scroll-target="#interactive-map-creation-function"><span class="header-section-number">7</span> 7. Interactive Map Creation Function</a></li>
   <li><a href="#network-visualization-preparation" id="toc-network-visualization-preparation" class="nav-link" data-scroll-target="#network-visualization-preparation"><span class="header-section-number">8</span> 8. Network Visualization Preparation</a></li>
   <li><a href="#interactivity-between-visuals" id="toc-interactivity-between-visuals" class="nav-link" data-scroll-target="#interactivity-between-visuals"><span class="header-section-number">9</span> 9. Interactivity between Visuals</a></li>
+  <li><a href="#overall-design-of-shiny-app" id="toc-overall-design-of-shiny-app" class="nav-link" data-scroll-target="#overall-design-of-shiny-app"><span class="header-section-number">10</span> 10. Overall Design of Shiny App</a></li>
   </ul>
 </nav>
     </div>
@@ -209,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Preparation for Oceanus Bias Analysis Dashboard</h1>
+<h1 class="title">Data Preparation for R Shiny App - Fishing for Biasness!</h1>
 </div>
 
 
@@ -226,18 +227,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This document walks through our data preparation steps, turning raw JSON knowledge graphs into ready-to-use R objects for:</p>
-<ul>
-<li><p>Network visualization</p></li>
-<li><p>Interactive mapping</p></li>
-<li><p>Sentiment analysis</p></li>
-<li><p>Statistical validation</p></li>
-</ul>
-<section id="load-required-packages-for-json-parsing-spatial-data-network-graphs-and-statistical-tests." class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> 1. Load Required Packages for JSON parsing, spatial data, network graphs, and statistical tests.</h1>
+<p>This document walks through our data preparation steps, turning raw JSON knowledge graphs into ready-to-use R objects for our R Shiny App.</p>
+<section id="load-required-packages" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 1. Load Required Packages</h1>
+<p>All&nbsp;essential R packages&nbsp;are loaded at&nbsp;the outset, covering&nbsp;JSON parsing, spatial/geographic data&nbsp;handling, network&nbsp;and interactive&nbsp;visualization, and statistical&nbsp;analysis. This&nbsp;ensures a flexible&nbsp;and reproducible environment&nbsp;for data wrangling, enrichment, and visualisation.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bslib)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
@@ -258,15 +252,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="define-topic-classifications-key-entities" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> 2. Define Topic Classifications &amp; Key Entities</h1>
-<p>We classify activities into <strong>Fishing</strong> vs <strong>Tourism</strong>, and list the six COOTEFOO board members.</p>
+<p>Activities are systematically classified as “Fishing” or “Tourism” using topic labels within the dataset, and the six COOTEFOO board members are enumerated. This step standardizes disparate data sources and enables meaningful cross-dataset and cross-member comparisons.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fishing_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"deep_fishing_dock"</span>, <span class="st">"new_crane_lomark"</span>, <span class="st">"fish_vacuum"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"low_volume_crane"</span>,   <span class="st">"affordable_housing"</span>,    <span class="st">"name_inspection_office"</span></span>
@@ -282,15 +273,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seal"</span>, <span class="st">"Simone Kat"</span>, <span class="st">"Carol Limpet"</span>,</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Teddy Goldstein"</span>, <span class="st">"Ed Helpsford"</span>, <span class="st">"Tante Titan"</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="node-metadata-extraction" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> 3. Node Metadata Extraction</h1>
-<p>This function reads each graph’s <code>nodes</code> array, coalesces labels, and returns a clean tibble.</p>
+<p>Each dataset’s node list is parsed and harmonized into a unified tibble, coalescing multiple label fields into a single, human-readable identifier. This registry is foundational for all subsequent network and spatial analyses, ensuring consistent entity tracking across views.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>load_nodes <span class="ot">&lt;-</span> <span class="cf">function</span>(json_file) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(json_file)) {</span>
@@ -320,15 +308,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>node_types <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(nodes_list) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(id, type, label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="parse-knowledge-graph-edges" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> 4. Parse Knowledge-Graph Edges</h1>
-<p>We transform each graph’s <code>links</code> into two relationship types, preserving sentiment and reason.</p>
+<p>The knowledge graph’s links are transformed into structured edge tables, capturing both meeting attendance and travel activities. Sentiment scores and reasoning text are preserved at the edge level, enabling nuanced sentiment and bias analysis. All relationships are mapped to their respective topics and datasets, supporting granular filtering and aggregation.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>parse_dataset <span class="ot">&lt;-</span> <span class="cf">function</span>(json_file, dataset_name) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(json_file)) {</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">tibble</span>(</span>
@@ -419,20 +404,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>  <span class="at">filah      =</span> <span class="fu">parse_dataset</span>(<span class="st">"FILAH.json"</span>,      <span class="st">"filah"</span>),</span>
 <span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>  <span class="at">journalist =</span> <span class="fu">parse_dataset</span>(<span class="st">"journalist.json"</span>, <span class="st">"journalist"</span>)</span>
 <span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="geographic-data-integration" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> 5. Geographic Data Integration</h1>
-<p>This helper loads:</p>
-<ul>
-<li><p>Regional boundaries (<code>.geojson</code>)</p></li>
-<li><p>Road network (<code>.json</code>)</p></li>
-<li><p>Node coordinates (any JSON with <code>lat</code>/<code>lon</code>)</p></li>
-</ul>
+<p>Regional boundaries (GeoJSON), road networks, and node coordinates are loaded and merged. This spatial layer enables mapping of activities, contextualizing member actions within the physical geography of Oceanus. The pipeline flexibly detects and processes coordinate fields from any dataset, ensuring spatial completeness<u>1</u>.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>load_geographic_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  geo <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">map=</span><span class="cn">NULL</span>, <span class="at">roads=</span><span class="cn">NULL</span>, <span class="at">nodes_with_coords=</span><span class="cn">NULL</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -484,15 +461,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>geo_data <span class="ot">&lt;-</span> <span class="fu">load_geographic_data</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="sentiment-data-preparation-for-cda" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> 6. Sentiment Data Preparation for CDA</h1>
-<p>We build a tidy (Member, Industry, Sentiment) table for parametric, non-parametric, robust, and Bayesian tests.</p>
+<p>Sentiment values from participant links are extracted, linked to industry classification, and organized into tidy tables. This enables robust statistical testing (parametric, non-parametric, robust, Bayesian) of sentiment differences by topic, dataset, and individual member, forming the backbone of the dashboard’s confirmatory analytics.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>load_participants <span class="ot">&lt;-</span> <span class="cf">function</span>(path) {</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(path)) {</span>
@@ -535,21 +509,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">FILAH      =</span> <span class="fu">load_participants</span>(<span class="st">"FILAH.json"</span>),</span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">JOURNALIST =</span> <span class="fu">load_participants</span>(<span class="st">"journalist.json"</span>)</span>
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="interactive-map-creation-function" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> 7. Interactive Map Creation Function</h1>
-<p>Generates a Leaflet map with:</p>
-<ul>
-<li><p>City markers</p></li>
-<li><p>Regional polygons</p></li>
-<li><p>Zone-colored roads</p></li>
-<li><p>Activity locations</p></li>
-</ul>
+<p>A modular function generates a Leaflet map with layered content: city markers, regional polygons, color-coded road networks, and activity locations. Markers and polygons are dynamically styled and filtered based on user selections, enabling spatial exploration of member actions and sentiment patterns.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>create_oceanus_map <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">topic_filter=</span><span class="st">"All"</span>) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addProviderTiles</span>(<span class="st">"CartoDB.Positron"</span>) <span class="sc">%&gt;%</span></span>
@@ -632,20 +597,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">options=</span><span class="fu">layersControlOptions</span>(<span class="at">collapsed=</span><span class="cn">FALSE</span>)</span>
 <span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="network-visualization-preparation" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> 8. Network Visualization Preparation</h1>
-<p>Builds a <strong>visNetwork</strong> object with:</p>
-<ul>
-<li><p>Node grouping &amp; colors</p></li>
-<li><p>Edge coloring by sentiment</p></li>
-<li><p>Interactive legend</p></li>
-</ul>
+<p>Network graphs are constructed with nodes grouped and colored by type (person, organization, fishing topic, tourism topic), and edges colored by sentiment. Interactive legends, node selection, and cross-highlighting logic are implemented to facilitate intuitive exploration of relational data and bias patterns.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>make_network_vis <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">output_id=</span><span class="cn">NULL</span>) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(df)<span class="sc">==</span><span class="dv">0</span>) {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">visNetwork</span>(<span class="at">nodes=</span><span class="fu">data.frame</span>(<span class="at">id=</span><span class="st">"none"</span>,<span class="at">label=</span><span class="st">"No Data"</span>,<span class="at">color=</span><span class="st">"#ccc"</span>),</span>
@@ -690,29 +647,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">label=</span><span class="fu">c</span>(<span class="st">"Positive"</span>,<span class="st">"Negative"</span>,<span class="st">"Neutral"</span>),</span>
 <span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">arrows=</span><span class="st">"to"</span>))</span>
 <span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="interactivity-between-visuals" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> 9. Interactivity between Visuals</h1>
 <ul>
-<li><strong>Side‐panel controls</strong> (<code>dataset_filter</code>, <code>member_filter</code>, <code>topic_filter</code>) feed into two reactives (<code>filtered_all()</code> / <code>filtered_edges_combined()</code>).</li>
-<li><strong>Activity dropdown</strong> is rebuilt whenever <code>filtered_edges_combined()</code> changes.</li>
-<li><strong>Network node clicks</strong> (<code>network_*_selected</code>) and <strong>map marker clicks</strong> both:
-<ul>
-<li><p>Update the same <code>selected_node</code> state</p></li>
-<li><p>Highlight that node/place across all three <code>visNetwork</code> graphs</p></li>
-<li><p>Set the <code>activity_filter</code>, which in turn filters the activity table.</p></li>
-</ul></li>
-</ul>
-<!-- -->
-<ul>
-<li><strong>Reset button</strong> clears selections in networks, map, and inputs.</li>
-<li>The <strong>activity summary</strong> table simply re‐queries <code>filtered_edges_combined()</code> plus the current <code>activity_filter</code>.</li>
+<li>User controls for dataset, member, topic, and activity selection drive all visualizations. Selections in one component (e.g., clicking a map marker or network node) propagate across all views, maintaining synchronized filtering and highlighting. The activity summary table and heatmap are dynamically rebuilt to reflect current filters, supporting iterative, question-driven analysis. A reset button restores the dashboard to its default state, enabling rapid re-exploration</li>
 </ul>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>filter_dataset <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(<span class="st">"all"</span> <span class="sc">%in%</span> input<span class="sc">$</span>member_filter)) {</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(source <span class="sc">%in%</span> input<span class="sc">$</span>member_filter)</span>
@@ -805,8 +747,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>  <span class="co"># …then join labels, pivot, and render as before…</span></span>
 <span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
+</section>
+<section id="overall-design-of-shiny-app" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> 10. Overall Design of Shiny App</h1>
+<p><strong>Data Quality and Consistency:</strong> The pipeline rigorously cleans, harmonizes, and validates all input data, ensuring reliability and comparability across sources. This minimizes the risk of misleading insights due to inconsistencies or missing values</p>
+<p><strong>Modularity and Reproducibility:</strong> Each function is modular, facilitating maintenance and extension. The workflow is fully reproducible, supporting future updates or re-analysis as new data becomes available.</p>
+<p><strong>Interactivity and Transparency:</strong> The dashboard’s design emphasizes transparency and user-driven exploration. All filters, selections, and statistical results are immediately reflected in the visualizations, empowering users to interrogate the data from multiple perspectives.</p>
+<p><strong>Comprehensive Statistical Validation:</strong> The data structures are tailored to support advanced statistical testing of sentiment bias, both at the aggregate and individual level, ensuring that findings are robust and evidence-based.</p>
+<p>The above pipeline transforms raw, heterogeneous knowledge graphs into a rich, interactive analytical environment. It enables users to explore, visualize, and statistically validate patterns of sentiment and bias in the Oceanus debate, leveraging the full power of R, Shiny, and modern data science best practices.</p>
 
 
 </section>
