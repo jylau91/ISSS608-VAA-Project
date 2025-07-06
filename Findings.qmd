@@ -48,9 +48,9 @@ The interactive map places *marine_life_deck* on the south-east coast of the mai
 
 The sentiment heat-map shows that TROUT and the Journalist dataset both portray Teddy Goldstein as negative towards tourism, yet neutral-to-positive towards fishing. Zooming into the TROUT network view reveals a negative edges target **marine_life_deck**, a tourism topic. The Activity Summary confirms the justification, *prefers resources to be allocated toward the fishing industry*. On the map, *marine_life_deck*, is situated around the blue region which is for fishing activity. The fuller context therefore suggests that Goldstein’s objection is location-specific rather than anti-tourism in principle, he resists placing a tourism facility in a predominant fishing zone.
 
-## Key evidence missing from TROUT – case of **Simone Kat**
+## Key evidence missing from TROUT – case of **Simone Kat and Carol Limpet**
 
-In the original TROUT‐only view Simone Kat looks entirely neutral: the heat-map shows **0.00** for both Tourism and Fishing, and the TROUT network offers no coloured arrows that would hint at her stance.
+In the original TROUT only view Simone Kat looks entirely neutral: the heat-map shows **0.00** for both Tourism and Fishing, and the TROUT network offers no coloured arrows that would hint at her stance.
 
 ![](images/clipboard-1925884925.png){width="672"}
 
@@ -82,9 +82,25 @@ Scrolling the **Activity-summary**, every line for Simone shows red ✗ under TR
 
 4.  **affordable_housing** - conflicts with tourism-focused accommodations for short term rentals
 
+## Carol Limpet - second missing voice
+
+TROUT also omits a key tourism-support entry from **Carol Limpet**, who **expresses concern about sustainable funding** for the *marine_life_deck* proposal.
+
+![](images/clipboard-2878785310.png){width="539"}
+
+The FILAH and Journalist columns reveal a solid **+0.61 Tourism sentiment**, while TROUT stays at **0.00**, giving the false impression that Carol is neutral.
+
+![](images/clipboard-1676826278.png)Both panels show **green arrows** from Carol to two tourism topics – *marine_life_deck* and *renaming_park_himark*. The TROUT panel collapses to *No Data*, proving those links are entirely absent from that source.
+
+![](images/clipboard-3740048875.png)
+
+![](images/clipboard-1383532953.png)
+
+The evidence shown above uncovers the internal budget debate surrounding the Marine Life Deck. Carol Limpet records a positive tourism sentiment of +0.50 yet explicitly **cautions that the attraction must be financed sustainably**, a nuance absent from TROUT. On the same topic Teddy Goldstein, speaking in his capacity as treasurer, registers a negative sentiment of -0.50, arguing that **limited funds should be redirected to fishing projects to preserve the overall financial stability of Oceanus**. Taken together these two remarks show that the discussion was less about simple pro- versus anti-tourism positions and more about how best to balance educational value against long-term fiscal responsibility. Their omission in any single dataset therefore distorts both the sentiment averages and the substance of the committee’s deliberations.
+
 ### Analysis
 
-Without these, TROUT leaves Simone looking inactive. Including FILAH and Journalist flips the picture: she emerges as the board’s principal advocate for community-oriented tourism. The omission therefore materially understates her contribution and skews any assessment of board balance.
+Without these, TROUT leaves Simone looking inactive. Including FILAH and Journalist flips the picture: she emerges as the board’s principal advocate for community-oriented tourism. The omission therefore materially understates her contribution and skews any assessment of board balance. Carol Limpet, meanwhile, registers a clear pro-tourism stance yet couples it with a funding-sustainability warning, demonstrating that budget discipline is being raised from within the tourism-friendly camp, not just by fishing advocates. Omitting these records therefore suppresses two key voices, exaggerates the apparent dominance of fishing sentiment and misrepresents the range of opinions in the committee.
 
 ## Behaviour most distorted by sampling bias in **FILAH - Ed Helpsford**
 
@@ -160,19 +176,21 @@ FILAH is **selective**, not incomplete: it captures tourism sentiment for three 
 
 ## Conclusion and Future Work
 
-The integrated analysis of the COOTEFOO knowledge-graph datasets shows a consistent, statistically supported bias in favour of tourism over fishing. Across topics, datasets and individual board members, mean sentiment towards tourism is higher, a pattern confirmed by ANOVA, Kruskal-Wallis, robust and Bayesian tests. The fishing‐favourable picture suggested by TROUT alone is not borne out once FILAH and the Journalist notes are added, illustrating the danger of drawing conclusions from incomplete evidence. Including all sources brings to light positive tourism statements, particularly for members such as Simone Kat and Seal, and exposes selective omissions in advocacy-group records. Visual checks, for example heatmaps and geo-linked network views, reinforce these statistical findings and demonstrate how data integration produces a more balanced understanding of committee dynamics.
+The analysis of the COOTEFOO knowledge graph datasets reveals a consistent and statistically significant bias in favor of tourism over fishing across all perspectives, by topic, by dataset, and by individual board member. Using a suite of confirmatory data analysis (CDA) methods (including ANOVA, Kruskal-Wallis, robust, and Bayesian tests), our project demonstrates that tourism receives higher mean sentiment scores than fishing, and this pattern holds true even when controlling for dataset source and member identity.​
 
-**Key findings**
+​**Key findings include:**​
 
--   Tourism sentiment dominates every comparative slice, by topic, by dataset and by member.
+-   **Tourism sentiment dominates**: Regardless of whether sentiment is compared by topic, dataset, or board member, tourism consistently outpaces fishing, indicating a clear preference within the committee.​
 
--   The tourism advantage is statistically significant under multiple confirmatory tests, whereas TROUT’s apparent fishing bias is not.
+-   **Statistical support**: The higher sentiment for tourism is statistically significant across multiple tests, while the fishing bias suggested by the TROUT dataset alone is not substantiated when broader data is considered.​
 
--   Data completeness matters: FILAH and Journalist records add positive tourism sentiment that TROUT omits, correcting the narrative.
+-   **Importance of data completeness**: Incorporating FILAH and JOURNALIST datasets surfaces positive tourism sentiments that are absent from TROUT’s records, countering any exaggerated claims of anti-tourism bias and highlightingthe risk of relying on incomplete data.​
 
--   Member-level inspection reveals selective gaps, for example the absence of Ed Helpsford in FILAH, illustrating how sampling bias can distort personal profiles.
+-   **Member-level insights:** Detailed member analysis (e.g., Simone Kat and Seal) shows a pronounced positive sentiment toward tourism when all data sources are included, clarifying true positions and exposing selective omissions inadvocacy group datasets.​
 
--   Mapping and sentiment heatmaps provide spatial and relational context, grounding numerical results in clear visual evidence.
+-   **Visual and geographic context:** Mapping and sentiment heatmaps further validate these findings, illustrating how data integration leads to a more balanced and defensible understanding of committee dynamics.​
+
+​In summary, the interactive visual analytics approach, grounded in comprehensive data integration and rigorous statistical testing, confirms a systematic preference for tourism within COOTEFOO. This underscores the necessity of using multiple, independent data sources to avoid misleading conclusions and to ensure transparency in evaluating potential bias in government oversight bodies.​
 
 **Future work**
 
