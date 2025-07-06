@@ -21,8 +21,11 @@ website:
         text: About Us
         
     right: 
-      - href: https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/
-        text: 📱 ShinyApp
+      - text: 📱 ShinyApp
+        menu:
+          - href: https://isss608-ay2024-25apr-jylau.shinyapps.io/DeepDiving/
+            text: Shiny App Link
+          - href: User_Guide.pdf
 
 format:
   html:
